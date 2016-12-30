@@ -1,6 +1,6 @@
 {
   "name": "pug-as-jsx-loader",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "pug loader module for webpack",
   "author": {
     "name": "Sung Won Cha",
@@ -11,15 +11,15 @@
     "url": "https://github.com/bluewings/pug-as-jsx-loader"
   },
   "dependencies": {
-    "glob": "^7.1.1",
-    "pug": "^2.0.0-beta6"
-  },
-  "devDependencies": {
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
+    "glob": "^7.1.1",
+    "pug": "^2.0.0-beta6"
+  },
+  "devDependencies": {
     "mocha": "^3.2.0",
     "should": "^11.1.2"
   },

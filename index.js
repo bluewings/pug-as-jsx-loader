@@ -9,6 +9,8 @@ const cached = {
   components: {},
 };
 
+const LINE_DIVIDER = '__line_divider__';
+
 const annotations = [
   {
     // decorator
@@ -313,7 +315,11 @@ const updateJSX = (source, files, rootPath) => {
         exportsFn,
         '  return (',
         // source,
-        jsxHelper.beautify(source, { indent: 4, maxLineLength: MAX_LINE_LENGTH }),
+        jsxHelper.beautify(source, {
+          indent: 4,
+          maxLineLength: MAX_LINE_LENGTH,
+          lineDivider: LINE_DIVIDER,
+        }),
         '  );',
         '}\n',
         example,
@@ -446,10 +452,6 @@ module.exports = function (source) {
       dict.endBlocks.forEach((each) => {
         (indentSize <= each.search(/[^\s]/) ? dict.lines : endBlocks).push(each);
       });
-      // for (let i = 0; i < dict.endBlocks.length; i++) {
-      //   (indentSize <= dict.endBlocks[i].search(/[^\s]/) ? dict.lines : endBlocks)
-      //     .push(dict.endBlocks[i]);
-      // }
       dict.endBlocks = endBlocks; // eslint-disable-line no-param-reassign
     }
     // parse annotations
@@ -457,6 +459,9 @@ module.exports = function (source) {
       if (curr.match(annotation.pattern)) {
         const { replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
         if (startBlock) {
+          if (startBlock.search(/[^\s]/) !== -1) {
+            dict.lines.push(`${Array(startBlock.search(/[^\s]/)).join('  ')}// ${LINE_DIVIDER}`);
+          }
           dict.lines.push(startBlock);
         }
         if (endBlock) {

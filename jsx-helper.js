@@ -75,8 +75,7 @@ const jsxHelper = {
         stack.push(elem);
       }
       if (is.textNode) {
-        chunk.split(/(__block:[0-9.]+__)/).forEach((curr) => {
-          const each = curr.trim();
+        chunk.split(/(__block:[0-9.]+__)/).forEach((each) => {
           if (!each) {
             return;
           }
@@ -144,9 +143,7 @@ const jsxHelper = {
         indent = indent.substr(2);
       }
       if (each.type === self.TEXT_NODE) {
-        if (each.context.trim()) {
-          buffer.push(self.retrieveBlock(indent + each.context));
-        }
+        buffer.push(self.retrieveBlock(`${indent}__textnode_start__${each.context}__textnode_end__`));
       } else if (each.children && each.children.length > 0) {
         if (each.children.length === 1 && each.children[0].type === self.TEXT_NODE) {
           const replaced = `${self.printElem(each, indent, options)}${each.children[0].context}</${each.type}>`;
@@ -177,7 +174,15 @@ const jsxHelper = {
     self.blocks = {};
     replaced = self.preserveQuote(replaced);
     replaced = self.preserveBlock(replaced);
-    return self.printJSX(self.parseJSX(replaced), options);
+    replaced = self.printJSX(self.parseJSX(replaced), options);
+    replaced = replaced.replace(/__textnode_end__\n\s*__textnode_start__/g, '')
+      .replace(/\n(\s*)__textnode_start__/gm, '\n$1')
+      .replace(/__textnode_start__(\s*)\n/gm, '$1\n')
+      .replace(/__textnode_(start|end)__/g, '');
+    if (options && options.lineDivider) {
+      replaced = replaced.replace(new RegExp(`(\\s+)(.*?){\\s*\\/\\*\\s*${options.lineDivider}\\s*\\*\\/\\s*}(.*)`, 'g'), '\n$1$2\n$1$3');
+    }
+    return replaced.replace(/\s+$/gm, '');
   },
 };
 
