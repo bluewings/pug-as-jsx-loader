@@ -11,4 +11,9 @@ describe('variables and components', () => {
       output.components.length.should.be.eql(1);
       output.components.should.containEql('ItemDetail');
     }));
+
+  it('ignore reserved keyword: React, this',
+    () => run('div\n  | {React.Children.only(this.props.children)}').then((output) => {
+      output.variables.length.should.be.eql(0);
+    }));
 });
