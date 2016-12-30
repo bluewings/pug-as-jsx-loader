@@ -48,8 +48,8 @@ const jsxHelper = {
   parseJSX(jsx, children = [], stack = []) {
     const self = this;
     let cursor = children;
-    jsx.split(/(<[^>]+>)/).filter((each) => each.trim()).forEach((_chunk) => {
-      let chunk = _chunk.trim();
+    jsx.split(/(<[^>]+>)/).filter(each => each.trim()).forEach((_chunk) => {
+      const chunk = _chunk.trim();
       const is = { textNode: true };
       if (chunk.search(/^<[^/]/) !== -1) {
         is.open = true;
@@ -75,23 +75,19 @@ const jsxHelper = {
         stack.push(elem);
       }
       if (is.textNode) {
-        chunk = chunk.replace(/__block:([0-9.]+)__/g, (whole, p1) => {
-          if (self.blocks[p1]) {
-            self.parseJSX(`{${self.blocks[p1]}}`, cursor, stack);
-            return '';
+        chunk.split(/(__block:[0-9.]+__)/).forEach((curr) => {
+          const each = curr.trim();
+          if (!each) {
+            return;
           }
-          return p1;
-        }).trim();
-        if (chunk) {
-          // cursor.push({
-          //   type: self.TEXT_NODE,
-          //   context: chunk,
-          // });
-
-
+          const found = each.match(/__block:([0-9.]+)__/);
+          if (found && self.blocks[found[1]]) {
+            self.parseJSX(`{${self.blocks[found[1]]}}`, cursor, stack);
+            return;
+          }
           const elem = {
             type: self.TEXT_NODE,
-            context: chunk,
+            context: each,
           };
           cursor.push(elem);
           if (chunk.search(/\.map\s*\(.*?\)\s*=>/) !== -1) {
@@ -101,7 +97,7 @@ const jsxHelper = {
             delete cursor.mapFn;
             elem.outdent = true;
           }
-        }
+        });
       }
       if (is.close) {
         stack.pop();

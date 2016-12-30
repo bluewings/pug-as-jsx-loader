@@ -307,6 +307,7 @@ const updateJSX = (source, files, rootPath) => {
       } else {
         exportsFn = 'export default function () {';
       }
+      // eslint-disable-next-line prefer-template
       const jsxOutput = [
         "import React from 'react';\n",
         exportsFn,
