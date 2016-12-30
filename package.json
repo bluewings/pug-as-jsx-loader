@@ -1,0 +1,30 @@
+{
+  "name": "pug-as-jsx-loader",
+  "version": "1.0.0",
+  "description": "pug loader module for webpack",
+  "author": {
+    "name": "Sung Won Cha",
+    "email": "mygenie3@naver.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://oss.navercorp.com/darth-vader/pug-as-jsx-loader.git"
+  },
+  "dependencies": {
+    "glob": "^7.1.1",
+    "pug": "^2.0.0-beta6"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "mocha": "^3.2.0",
+    "should": "^11.1.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "license": "MIT"
+}
