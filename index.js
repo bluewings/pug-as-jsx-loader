@@ -460,7 +460,7 @@ module.exports = function (source) {
         const { replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
         if (startBlock) {
           if (startBlock.search(/[^\s]/) !== -1) {
-            dict.lines.push(`${Array(startBlock.search(/[^\s]/)).join('  ')}// ${LINE_DIVIDER}`);
+            dict.lines.push(`${Array(startBlock.search(/[^\s]/) + 1).join(' ')}// ${LINE_DIVIDER}`);
           }
           dict.lines.push(startBlock);
         }
