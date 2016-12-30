@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://oss.navercorp.com/darth-vader/pug-as-jsx-loader.git"
+    "url": "https://github.com/bluewings/pug-as-jsx-loader"
   },
   "dependencies": {
     "glob": "^7.1.1",
