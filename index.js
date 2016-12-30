@@ -284,7 +284,7 @@ const getUsageExample = (components, variables, files, rootPath) =>
   });
 
 const updateJSX = (source, files, rootPath) => {
-  const reservedWords = ['this', 'return', 'true', 'false', 'new', 'event'];
+  const reservedWords = ['this', 'return', 'true', 'false', 'new', 'event', LINE_DIVIDER];
   const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
     const tagName = curr.substr(1);
     if (tagName && distinct.indexOf(tagName) === -1) {
