@@ -16,4 +16,14 @@ describe('variables and components', () => {
     () => run('div\n  | {React.Children.only(this.props.children)}').then((output) => {
       output.variables.length.should.be.eql(0);
     }));
+
+  it('fat arrow function /w concise syntax #1',
+    () => run("input(type='text', ref='{(input) => this.textInput = input}')").then((output) => {
+      output.variables.length.should.be.eql(0);
+    }));
+
+  it('fat arrow function /w concise syntax #2',
+    () => run("input(type='text', ref='{input => this.textInput = input}')").then((output) => {
+      output.variables.length.should.be.eql(0);
+    }));
 });

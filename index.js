@@ -98,7 +98,11 @@ const extractScript = (jsx, blocks = []) => {
     const replaced = text.replace(/(\[\[([0-9]+)]])/g, (whole, p1, p2) => blocks[parseInt(p2, 10)]);
     return replaced.match(/\[\[[0-9]+]]/g) ? fillBlockSpaces(replaced) : replaced;
   };
-  return fillBlockSpaces((remainder.match(/\[\[[0-9]+]]/g) || []).join(' ')).replace(/\s+/g, ' ').trim();
+  return fillBlockSpaces((remainder.match(/\[\[[0-9]+]]/g) || []).join(' '))
+    .replace(/\s+/g, ' ')
+    .replace(/=>\s*([^{]+?[^})]+)/g, '=> { $1 }')
+    .replace(/([a-zA-Z_$][a-zA-Z0-9_]*)(\s*)(=>\s*{)/g, '($1)$2$3')
+    .trim();
 };
 
 const indentScript = (jsx) => {
