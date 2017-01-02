@@ -40,7 +40,7 @@ class Report extends React.Component {
 };
 ```
 
-- pug template
+- pug template (./file.pug)
 ```
 div
   h1 {period.start} ~ {period.end}
