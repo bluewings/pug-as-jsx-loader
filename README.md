@@ -50,7 +50,7 @@ div
       ItemDetail(item='{item}')
 ```
 
-- transpiled function
+- → transpiled function
 ```
 import React from 'react';
 
