@@ -15,7 +15,7 @@ var jsx = require("pug-as-jsx-loader!./file.pug");
 // => returns file.pug content as jsx
 ```
 
-### pug template (./file.pug)
+### [pug | jade](https://pugjs.org) template (./file.pug)
 ```
 div
   h1 {period.start} ~ {period.end}
