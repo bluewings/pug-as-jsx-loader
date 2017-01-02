@@ -15,31 +15,6 @@ var jsx = require("pug-as-jsx-loader!./file.pug");
 // => returns file.pug content as jsx
 ```
 
-- import pug template
-```
-import React from 'react';
-
-import template from './file.pug';      // ← import pug template
-import ItemDetail from './ItemDetail';
-
-class Report extends React.Component {
-  render() {
-    const {
-      items,
-      period,
-    } = this.props;
-
-    return template.call(this, {        // ← use transpiled function
-      // variables
-      items,
-      period,
-      // components
-      ItemDetail,
-    });
-  }
-};
-```
-
 - pug template (./file.pug)
 ```
 div
@@ -73,6 +48,31 @@ export default function (params = {}) {
       </ul>
     </div>
   );
+};
+```
+
+- import pug template
+```
+import React from 'react';
+
+import template from './file.pug';      // ← import pug template
+import ItemDetail from './ItemDetail';
+
+class Report extends React.Component {
+  render() {
+    const {
+      items,
+      period,
+    } = this.props;
+
+    return template.call(this, {        // ← use transpiled function
+      // variables
+      items,
+      period,
+      // components
+      ItemDetail,
+    });
+  }
 };
 ```
 
