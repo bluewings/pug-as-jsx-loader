@@ -15,7 +15,7 @@ var jsx = require("pug-as-jsx-loader!./file.pug");
 // => returns file.pug content as jsx
 ```
 
-- pug template (./file.pug)
+### pug template (./file.pug)
 ```
 div
   h1 {period.start} ~ {period.end}
@@ -25,7 +25,7 @@ div
       ItemDetail(item='{item}')
 ```
 
-- → transpiled function
+### → transpiled function
 ```
 import React from 'react';
 
@@ -51,7 +51,7 @@ export default function (params = {}) {
 };
 ```
 
-- import pug template
+### import pug template
 ```
 import React from 'react';
 
