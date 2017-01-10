@@ -13,6 +13,15 @@ describe('annotaion', () => {
 </ul>`);
     }));
 
+  it('test @repeat (preserve user-defined key)',
+    () => run("ul\n  li(@repeat='items as item', otherAttr='', key='{item.id}') {item}").then((output) => {
+      output.jsx.should.be.eql(`<ul>
+  {items.map((item, i) =>
+    <li key={item.id} otherAttr="">{item}</li>
+  )}
+</ul>`);
+    }));
+
   it('test @if, @unless, @show, @hide',
     () => run(`div
   span(@if='props.if') hello

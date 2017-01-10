@@ -484,7 +484,8 @@ module.exports = function (source) {
   transformed.endBlocks.forEach((item) => {
     transformed.lines.push(item);
   });
-  replaced = transformed.lines.join('\n');
+  replaced = transformed.lines.join('\n')
+    .replace(/key='\{.*?\}',([^)]*key='\{.*?\}')/, '$1');
 
   // render to html and restore case sensitive
   replaced = pug.render(replaced, { pretty: true }).replace(/upper___([a-zA-Z])/g, (whole, p1) => p1.toUpperCase()).replace(/\{([^{}]+)\}/g, (whole, p1) => `{${p1.replace(/&quot;/g, '"')}}`);
