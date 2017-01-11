@@ -1,2 +1,2 @@
 node_modules
-*.pug.jsx
+*.pug.transpiled.jsx
