@@ -1,9 +1,22 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const pug = require('pug');
+const pug = typeof self === 'object' && self.pug ? self.pug : require('pug'); // eslint-disable-line no-undef
 const querystring = require('querystring');
 const jsxHelper = require('./jsx-helper');
+
+if (!fs.readFile || !fs.writeFile) {
+  fs.readFile = (file, options, callback) => {
+    if (typeof callback === 'function') {
+      callback(null, '');
+    }
+  };
+  fs.writeFile = (file, data, options, callback) => {
+    if (typeof callback === 'function') {
+      callback(null, '');
+    }
+  };
+}
 
 const cached = {
   components: {},

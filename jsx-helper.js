@@ -1,13 +1,13 @@
-const CLIEngine = require('eslint').CLIEngine;
+const CLIEngine = typeof self !== 'object' ? require('eslint').CLIEngine : null;
 
-const cli = new CLIEngine({
+const cli = CLIEngine ? new CLIEngine({
   useEslintrc: false,
   fix: true,
   rules: { 'prefer-template': 'error' },
-});
+}) : {};
 
 const eslintFix = (source) => {
-  const report = cli.executeOnText(source);
+  const report = typeof cli.executeOnText === 'function' ? cli.executeOnText(source) : source;
   if (report && report.results && report.results[0] && report.results[0].output) {
     return report.results[0].output
       .replace(/\s+/g, ' ')
