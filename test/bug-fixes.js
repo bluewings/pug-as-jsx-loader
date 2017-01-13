@@ -3,25 +3,33 @@
 require('should');
 const run = require('./helper').run;
 
-describe('bug-fixes', () => {
-  it('preserve the order of childnodes #1',
-    () => run('pre {state.start} ~ {state.end}').then((output) => {
-      output.jsx.should.be.eql(`<pre>
+/* eslint-disable */
+const tests = [
+['preserve the order of childnodes #1',
+`pre {state.start} ~ {state.end}`,
+`<pre>
   {state.start} ~ {state.end}
-</pre>`);
-    }));
+</pre>`],
 
-  it('preserve the order of childnodes #2',
-    () => run('pre {state.start} {state.end}').then((output) => {
-      output.jsx.should.be.eql(`<pre>
+['preserve the order of childnodes #2',
+`pre {state.start} {state.end}`,
+`<pre>
   {state.start} {state.end}
-</pre>`);
-    }));
+</pre>`],
 
-  it('preserve the order of childnodes #3',
-    () => run('pre from {state.start}\n  |  to {state.end}').then((output) => {
-      output.jsx.should.be.eql(`<pre>
+['preserve the order of childnodes #3',
+`pre from {state.start}
+  |  to {state.end}`,
+`<pre>
   from {state.start} to {state.end}
-</pre>`);
+</pre>`],
+];
+/* eslint-enable */
+
+describe('bug-fixes', () => {
+  tests.forEach(([name, input, expected]) => {
+    it(name, () => run(input).then((output) => {
+      output.jsx.should.be.eql(expected);
     }));
+  });
 });

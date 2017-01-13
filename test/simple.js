@@ -3,33 +3,46 @@
 require('should');
 const run = require('./helper').run;
 
-describe('simple', () => {
-  it('basic conversion',
-    () => run('div\n  h1.greeting hello world!').then((output) => {
-      output.jsx.should.be.eql(`<div>
+/* eslint-disable */
+const tests = [
+['basic conversion',
+`div
+  h1.greeting hello world!`,
+`<div>
   <h1 className="greeting">hello world!</h1>
-</div>`);
-    }));
+</div>`],
 
-  it('merge classNames',
-    () => run('.btn(abbr="interrupt", class="btn-default")').then((output) => {
-      output.jsx.should.be.eql('<div abbr="interrupt" className="btn btn-default" />');
-    }));
+['merge classNames',
+`.btn(abbr="interrupt", class="btn-default")`,
+`<div abbr="interrupt" className="btn btn-default" />`],
 
-  it('use template-literal if possible',
-    () => run('ul.nav.nav-tabs(className=\'{"nav-tabs-" + tabs.length}\')').then((output) => {
-      output.jsx.should.be.eql('<ul className={`nav nav-tabs nav-tabs-${tabs.length}`} />'); // eslint-disable-line no-template-curly-in-string
-    }));
+['use template-literal if possible',
+`ul.nav.nav-tabs(className=\'{"nav-tabs-" + tabs.length}\')`,
+'<ul className={`nav nav-tabs nav-tabs-${tabs.length}`} />'],
 
-  it('line breaks when there are too many properties',
-    () => run("button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')").then((output) => {
-      output.jsx.should.be.eql(`<button
+['line breaks when there are too many properties',
+`button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')`,
+`<button
   aria-controls="navbar"
   aria-expanded="false"
   className="navbar-toggle"
   data-target="#navbar"
   data-toggle="collapse"
   type="button"
-/>`);
+/>`],
+
+['multi line options',
+`div(options='{{ \
+  lineNum: true, \
+  theme: "monokai" }}')`,
+`<div options={{ lineNum: true, theme: 'monokai' }} />`],
+];
+/* eslint-enable */
+
+describe('simple', () => {
+  tests.forEach(([name, input, expected]) => {
+    it(name, () => run(input).then((output) => {
+      output.jsx.should.be.eql(expected);
     }));
+  });
 });
