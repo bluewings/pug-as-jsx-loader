@@ -26,4 +26,10 @@ describe('variables and components', () => {
     () => run("input(type='text', ref='{input => this.textInput = input}')").then((output) => {
       output.variables.length.should.be.eql(0);
     }));
+
+  it('ignore object key',
+    () => run('CodeMirror(options=\'{{ mode: "yaml", styleActiveLine: true, lineNumbers: lineNum, lineWrapping: true, theme: "monokai" }}\')').then((output) => {
+      output.variables.length.should.be.eql(1);
+      output.variables.should.containEql('lineNum');
+    }));
 });

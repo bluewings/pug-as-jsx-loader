@@ -147,7 +147,7 @@ const extractVariables = (jsx) => {
       local: [],
     };
     const replaced = `${curr.replace(/\?(.*?):/g, '?$1[[colon]]')
-      .replace(/[a-zA-Z0-9_$]+\s*:/, '"":')
+      .replace(/[a-zA-Z0-9_$]+\s*:/g, '"":')
       .replace(/\[\[colon]]/g, ':')} `;
     const type = replaced.trim().substr(0, 1) === '{' ? PUSH : POP;
     const used = replaced.replace(/\([^)]+\)\s*=>/g, (whole) => {
