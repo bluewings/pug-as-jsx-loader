@@ -507,7 +507,7 @@ module.exports = function (source) {
   replaced = replaced
     .replace(/ class="/g, ' className="')
     .replace(/ for="/g, ' htmlFor="')
-    .replace(/="(\{.*?\})"/g, (whole, p1) => `=${p1
+    .replace(/="(\{.*?\})[;]{0,1}"/g, (whole, p1) => `=${p1
       .replace(/&gt;/g, '>')
       .replace(/&lt;/g, '<')
       .replace(/&amp;/g, '&')}`)
