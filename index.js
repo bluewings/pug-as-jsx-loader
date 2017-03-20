@@ -437,7 +437,8 @@ module.exports = function (source) {
   // root = '../../src/app'
 
   // prepare for case sensitive
-  let replaced = source.replace(/([A-Z])/g, (whole, p1) => `upper___${p1}`);
+  let replaced = source.replace(/([A-Z])/g, (whole, p1) => `upper___${p1}`)
+    .replace(/(upper___[A-Za-z0-9]+)\.(upper___)/g, (whole, p1, p2) => `${p1}___dot_btw_cpnts___${p2}`);
 
   // remove comment
   replaced = replaced.split(/\n/).reduce((dict, curr) => {
@@ -513,6 +514,7 @@ module.exports = function (source) {
       .replace(/&amp;/g, '&')}`)
     .replace(/<!--(.*?)-->/g, (whole, p1) => `{ /* ${p1.replace(/\/\*/g, ' ').replace(/\*\//g, ' ').trim()} */ }`)
     .replace(/\n/g, '\n    ')
+    .replace(/___dot_btw_cpnts___/g, '.')
     .trim();
 
   // merge classnames

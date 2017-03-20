@@ -23,6 +23,18 @@ const tests = [
 `<pre>
   from {state.start} to {state.end}
 </pre>`],
+
+['sub components usage',
+`Modal
+  Modal.Header
+    Modal.Title { header }
+  Modal.Body { body }`,
+`<Modal>
+  <Modal.Header>
+    <Modal.Title>{ header }</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>{ body }</Modal.Body>
+</Modal>`],
 ];
 /* eslint-enable */
 

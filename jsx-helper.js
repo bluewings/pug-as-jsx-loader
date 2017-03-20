@@ -61,7 +61,7 @@ const jsxHelper = {
       }
       if (is.open) {
         const elem = {
-          type: chunk.replace(/^<([a-zA-Z0-9]+)/, '$1 ').split(/\s+/)[0],
+          type: chunk.replace(/^<([a-zA-Z0-9.]+)/, '$1 ').split(/\s+/)[0],
           props: ((chunk.replace(/(\/){0,1}>/, ' ').match(/([a-zA-Z0-9-]+)=([^\s]+)/g)) || []).reduce((props, curr) => {
             const [, name, value] = curr.match(/([a-zA-Z0-9-]+)=([^\s]+)/);
             return Object.assign({}, props, {
