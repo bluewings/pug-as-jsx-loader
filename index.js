@@ -43,7 +43,7 @@ const annotations = [
     process: (current, pattern) => {
       const [, indent,,, items, item,, index = 'i'] = current.match(pattern);
       return {
-        startBlock: `${indent}| {${items}.map((${item}, ${index}) =>`,
+        startBlock: `${indent}| {(${items} || []).map((${item}, ${index}) =>`,
         replacement: current.replace(pattern, `$1$2key='{${index}}'`),
         endBlock: `${indent}| )}`,
       };

@@ -9,7 +9,7 @@ const tests = [
 `ul
   li(@repeat='items as item') {item}`,
 `<ul>
-  {items.map((item, i) =>
+  {(items || []).map((item, i) =>
     <li key={i}>{item}</li>
   )}
 </ul>`],
@@ -18,7 +18,7 @@ const tests = [
 `ul
   li(@repeat='items as item', otherAttr='', key='{item.id}') {item}`,
 `<ul>
-  {items.map((item, i) =>
+  {(items || []).map((item, i) =>
     <li key={item.id} otherAttr="">{item}</li>
   )}
 </ul>`],
