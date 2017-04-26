@@ -6,6 +6,11 @@ const cli = CLIEngine ? new CLIEngine({
   rules: { 'prefer-template': 'error' },
 }) : {};
 
+const constant = {
+  LESS_THAN: '__less_than__',
+  GREATER_THAN: '__greater_than__',
+};
+
 const eslintFix = (source) => {
   const report = typeof cli.executeOnText === 'function' ? cli.executeOnText(source) : source;
   if (report && report.results && report.results[0] && report.results[0].output) {
@@ -182,10 +187,15 @@ const jsxHelper = {
     if (options && options.lineDivider) {
       replaced = replaced.replace(new RegExp(`(\\s+)(.*?){\\s*\\/\\*\\s*${options.lineDivider}\\s*\\*\\/\\s*}(.*)`, 'g'), '\n$1$2\n$1$3');
     }
+    // convert protected inequality symbols
+    replaced = replaced
+      .replace(new RegExp(constant.LESS_THAN, 'g'), '<')
+      .replace(new RegExp(constant.GREATER_THAN, 'g'), '>')
     return replaced.replace(/\s+$/gm, '');
   },
 };
 
 module.exports = {
+  constant,
   beautify: (jsx, options) => jsxHelper.beautify(jsx, options),
 };
