@@ -71,7 +71,9 @@ const annotations = [
     process: (current, pattern) => {
       const [, indent,,, condition] = current.match(pattern);
       return {
-        startBlock: `${indent}| {!(${condition}) && (`,
+        startBlock: `${indent}| {!(${condition
+          .replace(/</g, LESS_THAN)
+          .replace(/>/g, GREATER_THAN)}) && (`,
         replacement: current.replace(pattern, '$1$2').replace(/\(\s*,\s*/, '('),
         endBlock: `${indent}| )}`,
       };
@@ -305,7 +307,7 @@ const getUsageExample = (components, variables, files, rootPath) =>
   });
 
 const updateJSX = (source, files, rootPath) => {
-  const reservedWords = ['this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+  const reservedWords = ['this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER];
   const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
     const tagName = curr.substr(1);
     if (tagName && distinct.indexOf(tagName) === -1) {
