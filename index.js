@@ -41,7 +41,7 @@ const annotations = [
   },
   {
     // repeat
-    pattern: /^(\s*)(.*)(@repeat='\s*([^\s]+)\s+as\s+([^\s]+)\s*(,\s+([a-zA-Z0-9_]+)){0,1}\s*')/,
+    pattern: /^(\s*)(.*)(@repeat='\s*([^\n]+?)\s+as\s+([^\s]+)\s*(,\s+([a-zA-Z0-9_]+)){0,1}\s*')/,
     process: (current, pattern) => {
       const [, indent,,, items, item,, index = 'i'] = current.match(pattern);
       return {

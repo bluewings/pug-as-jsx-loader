@@ -14,6 +14,15 @@ const tests = [
   )}
 </ul>`],
 
+['test @repeat (complex)',
+`ul
+  li(@repeat='allTemplates.filter(e => e.id === after.templates[0])[0].examples as example') {example}`,
+`<ul>
+  {(allTemplates.filter(e => e.id === after.templates[0])[0].examples || []).map((example, i) =>
+    <li key={i}>{example}</li>
+  )}
+</ul>`],
+
 ['test @repeat (preserve user-defined key)',
 `ul
   li(@repeat='items as item', otherAttr='', key='{item.id}') {item}`,
