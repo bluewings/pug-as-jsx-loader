@@ -1,5 +1,9 @@
 # pug-as-jsx loader for webpack
 
+
+## [Try it out here...](https://bluewings.github.io/pug-as-jsx-loader/)
+
+
 ## Installation
 
 ```
