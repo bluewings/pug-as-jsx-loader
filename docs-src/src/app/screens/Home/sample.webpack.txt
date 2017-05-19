@@ -1,0 +1,21 @@
+module.exports = {
+  context: `${__dirname}/app`,
+  entry: './entry',
+  output: {
+    path: `${__dirname}/dist`,
+    filename: 'bundle.js',
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.pug$/,
+        exclude: /node_modules/,
+        loaders: ['babel?presets[]=es2015&presets[]=react', 'pug-as-jsx'],
+      },
+      {
+        test: /\.(js|jsx)$/,
+        loaders: ['babel?presets[]=es2015&presets[]=react'],
+      },
+    ],
+  },
+};

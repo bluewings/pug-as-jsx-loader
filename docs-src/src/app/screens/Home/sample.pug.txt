@@ -1,0 +1,21 @@
+---------- TodoMVC
+section.todoapp
+  header.header
+    h1 todos
+    input.new-todo(autofocus='autofocus', autocomplete='off', placeholder='What needs to be done?')
+  section.main
+    input.toggle-all(type='checkbox')
+    ul.todo-list
+      TodoItem(@repeat='shownTodos as todo',
+        key='{todo.id}', todo='{todo}',
+        onToggle='{this.toggle.bind(this, todo)}',
+        onDestroy='{this.destroy.bind(this, todo)}',
+        onEdit='{this.edit.bind(this, todo)}',
+        editing='{this.state.editing === todo.id}',
+        onSave='{this.save.bind(this, todo)}',
+        onCancel='{this.cancel}')
+  TodoFooter(@if='activeTodoCount + completedCount > 0',
+    count='{activeTodoCount}',
+    completedCount='{completedCount}',
+    nowShowing='{this.state.nowShowing}',
+    onClearCompleted='{this.clearCompleted}')

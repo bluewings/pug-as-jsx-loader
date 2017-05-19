@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 100;
+    src: local("Noto Sans Thin"), local("Noto Sans Thin"), local("Noto Sans Thin");
+    src: url(./fonts/noto-sans-thin.eot);
+    src: url(./fonts/noto-sans-thin.eot?#iefix) format("embedded-opentype"), url(./fonts/noto-sans-thin.woff) format("woff") /* , url(./fonts/noto-sans-thin.otf) format("truetype") */;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local("Noto Sans Light"), local("Noto Sans Light"), local("Noto Sans Light");
+    src: url(./fonts/noto-sans-light.eot);
+    src: url(./fonts/noto-sans-light.eot?#iefix) format("embedded-opentype"), url(./fonts/noto-sans-light.woff) format("woff") /* , url(./fonts/noto-sans-light.otf) format("truetype") */;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local("Noto Sans Regular"), local("Noto Sans Regular"), local("Noto Sans Regular");
+    src: url(./fonts/noto-sans-regular.eot);
+    src: url(./fonts/noto-sans-regular.eot?#iefix) format("embedded-opentype"), url(./fonts/noto-sans-regular.woff2) format("woff2"), url(./fonts/noto-sans-regular.woff) format("woff") /* , url(./fonts/noto-sans-regular.otf) format("truetype") */;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local("Noto Sans Medium"), local("Noto Sans Medium"), local("Noto Sans Medium");
+    src: url(./fonts/noto-sans-medium.eot);
+    src: url(./fonts/noto-sans-medium.eot?#iefix) format("embedded-opentype"), url(./fonts/noto-sans-medium.woff) format("woff") /* , url(./fonts/noto-sans-medium.otf) format("truetype") */;
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local("Noto Sans Bold"), local("Noto Sans Bold"), local("Noto Sans Bold");
+    src: url(./fonts/noto-sans-bold.eot);
+    src: url(./fonts/noto-sans-bold.eot?#iefix) format("embedded-opentype"), url(./fonts/noto-sans-bold.woff) format("woff") /* , url(./fonts/noto-sans-bold.otf) format("truetype") */;
+}
