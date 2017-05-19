@@ -17,7 +17,7 @@ div.container-fluid(styleName='root')
       h2(styleName='topic')
         #try-it-out(styleName='anchor')
         span
-          | Try it out 
+          | Try it out
           a.header-anchor(href='#try-it-out', aria-hidden='true')
             span ¶
 
@@ -85,5 +85,5 @@ div.container-fluid(styleName='root')
         .panel-body(style='{{ padding: 0 }}')
           div(styleName='code-wrap')
             CodeMirror(
-              value='{sampleWebpack}',
+              value='{this.state.webpackConfig}',
               options='{{ mode: "javascript", styleActiveLine: true, lineNumbers: true, lineWrapping: false, theme: "default" }}')

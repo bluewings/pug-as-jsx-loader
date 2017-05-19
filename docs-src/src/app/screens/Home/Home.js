@@ -27,16 +27,21 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
+    const emptyString = Array(10).join('\n');
     this.state = {
       boxes: [],
-      source: '',
-      usage: '1',
-      jsx: '1',
+      source: emptyString,
+      usage: emptyString,
+      jsx: emptyString,
+      webpackConfig: emptyString,
     };
   }
 
-  componentWillMount() {
-    this.selectSample(samples[0]);
+  componentDidMount() {
+    setTimeout(() => {
+      this.selectSample(samples[0]);
+      this.setState({ webpackConfig: sampleWebpack });
+    });
   }
 
   handleSourceChange = (value) => {
@@ -88,7 +93,6 @@ class Home extends React.Component {
 
   render() {
     return template.call(this, {
-      sampleWebpack,
       samples,
       CodeMirror,
       DropdownButton,
