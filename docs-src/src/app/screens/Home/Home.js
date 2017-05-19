@@ -34,15 +34,23 @@ class Home extends React.Component {
       source: emptyString,
       usage: emptyString,
       jsx: emptyString,
-      webpackConfig: emptyString,
+      webpackConfig: sampleWebpack,
     };
+    // codemirror instances
+    this.cm = {};
+  }
+
+  componentWillMount() {
+    this.selectSample(samples[0]);
   }
 
   componentDidMount() {
+    // safari fallback
     setTimeout(() => {
-      this.selectSample(samples[0]);
-      this.setState({ webpackConfig: sampleWebpack });
-    });
+      Object.keys(this.cm).forEach((e) => {
+        this.cm[e].getCodeMirror().refresh();
+      });
+    }, 1000);
   }
 
   handleSourceChange = (value) => {

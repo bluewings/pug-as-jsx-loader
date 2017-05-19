@@ -35,9 +35,9 @@ div.container-fluid(styleName='root')
                 eventKey='{i}', onClick='{this.selectSample.bind(this, sample)}')
                 | {sample.name}
         .panel-body(style='{{ padding: 0 }}')
-          div(@if='this.state.source',
-            styleName='code-wrap')
+          div(styleName='code-wrap')
             CodeMirror(
+              ref='{(cm) => this.cm.source = cm}',
               value='{this.state.source}',
               onChange='{this.handleSourceChange}',
               options='{{ mode: "pug", styleActiveLine: true, lineNumbers: true, lineWrapping: false, theme: "default" }}')
@@ -55,9 +55,9 @@ div.container-fluid(styleName='root')
               | Transpiled JSX
               span &nbsp; | &nbsp;
               a(href='', onClick='{this.selectTab.bind(this, "jsx")}') Import PUG template
-            div(@if='this.state.jsx',
-              styleName='code-wrap')
+            div(styleName='code-wrap')
               CodeMirror(
+                ref='{(cm) => this.cm.jsx = cm}',
                 value='{this.state.jsx}',
                 options='{{ mode: "jsx", styleActiveLine: false, lineNumbers: false, lineWrapping: false, theme: "default", readOnly: true }}')
           div(@if='this.state.tab === "jsx"')
@@ -65,9 +65,9 @@ div.container-fluid(styleName='root')
               a(href='', onClick='{this.selectTab.bind(this, "usage")}') Transpiled JSX
               span &nbsp; | &nbsp;
               | Import PUG template
-            div(@if='this.state.usage',
-              styleName='code-wrap')
+            div(styleName='code-wrap')
               CodeMirror(
+                ref='{(cm) => this.cm.usage = cm}',
                 value='{this.state.usage}',
                 options='{{ mode: "javascript", styleActiveLine: true, lineNumbers: false, lineWrapping: false, theme: "default", readOnly: true }}')
 
@@ -86,8 +86,8 @@ div.container-fluid(styleName='root')
           i.fa.fa-fw.fa-code
           | &nbsp; webpack.config.js
         .panel-body(style='{{ padding: 0 }}')
-          div(@if='this.state.webpackConfig',
-            styleName='code-wrap')
+          div(styleName='code-wrap')
             CodeMirror(
+              ref='{(cm) => this.cm.webpackConfig = cm}',
               value='{this.state.webpackConfig}',
               options='{{ mode: "javascript", styleActiveLine: true, lineNumbers: true, lineWrapping: false, theme: "default" }}')
