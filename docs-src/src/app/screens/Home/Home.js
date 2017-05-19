@@ -64,7 +64,7 @@ class Home extends React.Component {
       __eslint: false,
     };
     try {
-      pugAsJsxLoader.call(opt, source);
+      pugAsJsxLoader.call(opt, (source || '').replace(/[\n\s]+$/, ''));
     } catch (err) {
       this.setState({
         jsx: '',
