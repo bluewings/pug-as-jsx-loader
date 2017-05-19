@@ -27,7 +27,8 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    const emptyString = Array(10).join('\n');
+    // const emptyString = Array(10).join('\n');
+    const emptyString = '';
     this.state = {
       boxes: [],
       source: emptyString,
