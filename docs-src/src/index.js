@@ -8,6 +8,8 @@ import FastClick from 'fastclick';
 // import connectors from './app/shared/connectors';
 import configureStore from './app/stores/configureStore';
 import { getRoutes } from './app/config/routes';
+import App from './app/App';
+import Home from './app/screens/Home';
 
 const store = configureStore();
 
@@ -32,12 +34,16 @@ const history = syncHistoryWithStore(browserHistory, store);
 const setup = (renderProps) => {
   render(
     <Provider store={store}>
-      <Router {...renderProps} />
+      <App context={context}>
+        <Home />
+      </App>
+      {/*<Router {...renderProps} />*/}
     </Provider>,
     document.getElementById('app'),
   );
+
   // Enable Hot Module Replacement (HMR)
-  if (module.hot) {
+  /*if (module.hot) {
     module.hot.accept('./app/config/routes', () => {
       try {
         // eslint-disable-next-line global-require
@@ -53,7 +59,7 @@ const setup = (renderProps) => {
         console.log(error);
       }
     });
-  }
+  }*/
 };
 
 match({ history, routes }, (error, redirectLocation, renderProps) => {
