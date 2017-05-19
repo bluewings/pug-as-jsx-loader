@@ -149,36 +149,38 @@ module.exports = function (jsxHelper, pug) {
     const POP = '-';
     const variables = {};
     indentScript(extractScript(jsx))
-  .split(/\n/).filter(each => each.trim() !== '')
-  .reduce((stack, curr) => {
-    const data = {
-      local: [],
-    };
-    const replaced = `${curr.replace(/\?(.*?):/g, '?$1[[colon]]')
-      .replace(/[a-zA-Z0-9_$]+\s*:/g, '"":')
-      .replace(/\[\[colon]]/g, ':')} `;
-    const type = replaced.trim().substr(0, 1) === '{' ? PUSH : POP;
-    const used = replaced.replace(/\([^)]+\)\s*=>/g, (whole) => {
-      data.local = (`${whole} `).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ')
-        .replace(/\..*?\s+/g, ' ').trim()
-        .split(/\s+/);
-      return ' ';
-    }).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ').replace(/\..*?\s+/g, ' ')
-      .trim()
-      .split(/\s+/);
-    stack.reduce((prev, _curr) => prev.filter(each => _curr.local.indexOf(each) === -1), used)
-    .forEach((each) => {
-      if (each && each.search(/^[0-9]/) === -1) {
-        variables[each] = true;
-      }
-    });
-    if (type === PUSH) {
-      stack.push(data);
-    } else {
-      stack.pop();
-    }
-    return stack;
-  }, []);
+      .split(/\n/)
+      .map(each => each.replace(/\/\*(.*)?\*\//g, ''))
+      .filter(each => each.trim() !== '')
+      .reduce((stack, curr) => {
+        const data = {
+          local: [],
+        };
+        const replaced = `${curr.replace(/\?(.*?):/g, '?$1[[colon]]')
+          .replace(/[a-zA-Z0-9_$]+\s*:/g, '"":')
+          .replace(/\[\[colon]]/g, ':')} `;
+        const type = replaced.trim().substr(0, 1) === '{' ? PUSH : POP;
+        const used = replaced.replace(/\([^)]+\)\s*=>/g, (whole) => {
+          data.local = (`${whole} `).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ')
+            .replace(/\..*?\s+/g, ' ').trim()
+            .split(/\s+/);
+          return ' ';
+        }).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ').replace(/\..*?\s+/g, ' ')
+          .trim()
+          .split(/\s+/);
+        stack.reduce((prev, _curr) => prev.filter(each => _curr.local.indexOf(each) === -1), used)
+          .forEach((each) => {
+            if (each && each.search(/^[0-9]/) === -1) {
+              variables[each] = true;
+            }
+          });
+        if (type === PUSH) {
+          stack.push(data);
+        } else {
+          stack.pop();
+        }
+        return stack;
+      }, []);
     return Object.keys(variables).sort();
   };
 

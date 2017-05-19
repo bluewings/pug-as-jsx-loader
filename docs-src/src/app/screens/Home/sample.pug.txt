@@ -1,3 +1,45 @@
+---------- hello world
+div
+  h1.greeting(onClick='{greeting.bind(this)}')
+    | Hello World, {name}!
+
+---------- components
+// component
+Modal
+  // sub component
+  //- e.g. https://react-bootstrap.github.io/components.html#modals-live
+  Modal.Header
+    Modal.Title { content.header }
+  Modal.Body { content.body }
+
+---------- @ helpers
+div
+  // @repeat
+  ul
+    li(@repeat='active as item') {item.content}
+    li(@repeat='archived as item',
+      key='{item.id}') {item.content}
+  // @if
+  span(@if='this.props.if') hello
+  // @unless
+  span(@unless='this.props.unless') unless
+  // @show
+  span(@show='visible.indexOf(target) !== -1') show
+  // @hide
+  span(@hide='visible.indexOf(target) === -1') hide
+
+---------- classname
+div
+  // merge classNames
+  .btn(attrs="otherAttrs", class="btn-default")
+  // manipulate classNames
+  ul.nav.nav-tabs(className='{"nav-tabs-" + this.state.type}')
+
+---------- multi-line
+div(options='{{ \
+  lineNum: true, \
+  theme: "monokai" }}')
+
 ---------- TodoMVC
 section.todoapp
   header.header
