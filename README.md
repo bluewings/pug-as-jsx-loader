@@ -3,7 +3,7 @@
 
 ## [Try it out here...](https://bluewings.github.io/pug-as-jsx-loader/)
 
-<img src='https://bluewings.github.io/pug-as-jsx-loader/static/img/try-it-out.png' height='600px'>
+<img src='https://bluewings.github.io/pug-as-jsx-loader/static/img/try-it-out.png'>
 
 ## Installation
 
