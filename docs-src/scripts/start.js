@@ -28,6 +28,19 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const cli = useYarn ? 'yarn' : 'npm';
 const isInteractive = process.stdout.isTTY;
 
+const glob = require('glob');
+const path = require('path');
+const fse = require('fs-extra');
+
+const loaderPath = path.join(__dirname, '..', 'src', 'loader');
+
+// copy files
+if (!fs.existsSync(loaderPath)) {
+  fs.mkdirSync(loaderPath);
+}
+glob.sync(path.join(__dirname, '..', '..', '*.js'))
+  .forEach(e => fse.copySync(e, path.join(loaderPath, path.basename(e))));
+
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appIndexHtml, paths.appIndexJs])) {
   process.exit(1);

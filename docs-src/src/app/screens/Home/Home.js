@@ -1,8 +1,8 @@
 import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import CodeMirror from 'react-codemirror';
-import pugAsJsxLoader from 'pug-as-jsx-loader/browser';
 import ApplyStyles from 'helpers/ApplyStyles';
+import pugAsJsxLoader from '../../../loader/browser';
 
 // jsx, styles
 import template from './Home.pug';
