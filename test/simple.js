@@ -36,6 +36,13 @@ const tests = [
   lineNum: true, \
   theme: "monokai" }}')`,
 `<div options={{ lineNum: true, theme: 'monokai' }} />`],
+
+['use jsx expression',
+`div
+  WrappedComponent(id='wrap', __jsx='{...props}', data-attr='attr')`,
+`<div>
+  <WrappedComponent data-attr="attr" id="wrap" {...props} />
+</div>`],
 ];
 /* eslint-enable */
 

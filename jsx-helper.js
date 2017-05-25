@@ -182,16 +182,17 @@ module.exports = (eslint = {}) => {
       replaced = self.preserveBlock(replaced);
       replaced = self.printJSX(self.parseJSX(replaced), options);
       replaced = replaced.replace(/__textnode_end__\n\s*__textnode_start__/g, '')
-      .replace(/\n(\s*)__textnode_start__/gm, '\n$1')
-      .replace(/__textnode_start__(\s*)\n/gm, '$1\n')
-      .replace(/__textnode_(start|end)__/g, '');
+        .replace(/\n(\s*)__textnode_start__/gm, '\n$1')
+        .replace(/__textnode_start__(\s*)\n/gm, '$1\n')
+        .replace(/__textnode_(start|end)__/g, '');
       if (options && options.lineDivider) {
         replaced = replaced.replace(new RegExp(`(\\s+)(.*?){\\s*\\/\\*\\s*${options.lineDivider}\\s*\\*\\/\\s*}(.*)`, 'g'), '\n$1$2\n$1$3');
       }
-    // convert protected inequality symbols
+      // convert protected inequality symbols
       replaced = replaced
-      .replace(new RegExp(constant.LESS_THAN, 'g'), '<')
-      .replace(new RegExp(constant.GREATER_THAN, 'g'), '>');
+        .replace(new RegExp(constant.LESS_THAN, 'g'), '<')
+        .replace(new RegExp(constant.GREATER_THAN, 'g'), '>')
+        .replace(/jsx-syntax--=/g, '');
       return replaced.replace(/\s+$/gm, '');
     },
   };

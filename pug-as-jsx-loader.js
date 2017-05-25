@@ -150,7 +150,7 @@ module.exports = function (jsxHelper, pug) {
     const variables = {};
     indentScript(extractScript(jsx))
       .split(/\n/)
-      .map(each => each.replace(/\/\*(.*)?\*\//g, ''))
+      .map(each => each.replace(/\/\*(.*)?\*\//g, '').replace(/\.\.\.([a-zA-Z_$])/g, '... $1'))
       .filter(each => each.trim() !== '')
       .reduce((stack, curr) => {
         const data = {
@@ -424,7 +424,7 @@ module.exports = function (jsxHelper, pug) {
 
     const callback = this.async();
 
-  // related file names
+    // related file names
     const files = {
       path: this.resourcePath.replace(/\/[^/]+$/, ''),
       js: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.js'),
@@ -444,13 +444,15 @@ module.exports = function (jsxHelper, pug) {
     if (root) {
       root = root.replace(/__\//g, '../');
     }
-  // root = '../../src/app'
+    // root = '../../src/app'
 
-  // prepare for case sensitive
-    let replaced = source.replace(/([A-Z])/g, (whole, p1) => `upper___${p1}`)
-    .replace(/(upper___[A-Za-z0-9]+)\.(upper___)/g, (whole, p1, p2) => `${p1}___dot_btw_cpnts___${p2}`);
+    // prepare for case sensitive
+    let replaced = source
+      .replace(/__jsx=/g, 'jsx-syntax--=')
+      .replace(/([A-Z])/g, (whole, p1) => `upper___${p1}`)
+      .replace(/(upper___[A-Za-z0-9]+)\.(upper___)/g, (whole, p1, p2) => `${p1}___dot_btw_cpnts___${p2}`);
 
-  // remove comment
+    // remove comment
     replaced = replaced.split(/\n/).reduce((dict, curr) => {
       let indentSize = curr.search(/[^\s]/);
       if (dict.indentSize !== -1 && indentSize <= dict.indentSize && curr.trim()) {
@@ -471,9 +473,9 @@ module.exports = function (jsxHelper, pug) {
       lines: [],
     }).lines.join('\n');
 
-  // process annotations
+    // process annotations
     const transformed = replaced.split(/\n/).reduce((dict, curr) => {
-    // attach remaind end block codes.
+      // attach remaind end block codes.
       const indentSize = curr.search(/[^\s]/);
       if (indentSize !== -1) {
         const endBlocks = [];
@@ -482,7 +484,7 @@ module.exports = function (jsxHelper, pug) {
         });
         dict.endBlocks = endBlocks; // eslint-disable-line no-param-reassign
       }
-    // parse annotations
+      // parse annotations
       annotations.forEach((annotation) => {
         if (curr.match(annotation.pattern)) {
           const { replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
@@ -509,27 +511,27 @@ module.exports = function (jsxHelper, pug) {
       transformed.lines.push(item);
     });
     replaced = transformed.lines.join('\n')
-    .replace(/key='\{.*?\}',([^)]*key='\{.*?\}')/, '$1');
+      .replace(/key='\{.*?\}',([^)]*key='\{.*?\}')/, '$1');
 
-  // render to html and restore case sensitive
+    // render to html and restore case sensitive
     replaced = pug.render(replaced, { pretty: true }).replace(/upper___([a-zA-Z])/g, (whole, p1) => p1.toUpperCase()).replace(/\{([^{}]+)\}/g, (whole, p1) => `{${p1.replace(/&quot;/g, '"')}}`);
 
-  // fixes
+    // fixes
     replaced = replaced
-    .replace(/ class="/g, ' className="')
-    .replace(/ for="/g, ' htmlFor="')
-    .replace(/="(\{.*?\})[;]{0,1}"/g, (whole, p1) => `=${p1
-      .replace(/&gt;/g, '>')
-      .replace(/&lt;/g, '<')
-      .replace(/&amp;/g, '&')}`)
-    .replace(/<!--(.*?)-->/g, (whole, p1) => `{ /* ${p1.replace(/\/\*/g, ' ').replace(/\*\//g, ' ').trim()} */ }`)
-    .replace(/\n/g, '\n    ')
-    .replace(/___dot_btw_cpnts___/g, '.')
-    .trim();
+      .replace(/ class="/g, ' className="')
+      .replace(/ for="/g, ' htmlFor="')
+      .replace(/="(\{.*?\})[;]{0,1}"/g, (whole, p1) => `=${p1
+        .replace(/&gt;/g, '>')
+        .replace(/&lt;/g, '<')
+        .replace(/&amp;/g, '&')}`)
+      .replace(/<!--(.*?)-->/g, (whole, p1) => `{ /* ${p1.replace(/\/\*/g, ' ').replace(/\*\//g, ' ').trim()} */ }`)
+      .replace(/\n/g, '\n    ')
+      .replace(/___dot_btw_cpnts___/g, '.')
+      .trim();
 
-  // merge classnames
+    // merge classnames
     replaced = `    ${mergeClassNameProperty(replaced)}`;
-  // self-closing-component
+    // self-closing-component
     replaced = replaced.replace(/<([a-zA-Z0-9]+)(\s+[^>]+){0,1}>\s*<\/([a-zA-Z0-9]+)>/g, (whole, p1, p2, p3) => {
       if (p1 === p3) {
         return `<${p1}${p2 || ''} />`;
