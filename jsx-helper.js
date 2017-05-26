@@ -145,6 +145,9 @@ module.exports = (eslint = {}) => {
       const self = this;
       let indent = _indent;
       children.forEach((each) => {
+        if (each.context === ');}') {
+          each.outdent = true;
+        }
         if (each.outdent) {
           indent = indent.substr(2);
         }

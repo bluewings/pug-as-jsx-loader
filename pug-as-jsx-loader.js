@@ -30,7 +30,7 @@ module.exports = function (jsxHelper, pug) {
 
   const annotations = [
     {
-    // decorator
+      // decorator
       pattern: /^(\s*)(.*)(@decorator='\s*([^\s]+)\s*')/,
       process: (current, pattern) => {
         const [, indent,,, decorator] = current.match(pattern);
@@ -42,7 +42,37 @@ module.exports = function (jsxHelper, pug) {
       },
     },
     {
-    // repeat
+      // for
+      pattern: /^(\s*)(.*)(@for='\s*([(]{0,1})\s*([^\s]+)\s*(,\s+([a-zA-Z0-9_]+)){0,1}\s*(,\s+([a-zA-Z0-9_]+)){0,1}\s*([)]{0,1})\s+in\s+([^\n]+?)\s*')/,
+      process: (current, pattern) => {
+        const [, indent,,, parenthesesL, item,, key,, index, parenthesesR, items] = current.match(pattern);
+        let paramKey;
+        let paramIndex = '';
+        if (!parenthesesL && !parenthesesR && !key) {
+          paramKey = 'i';
+        } else if (parenthesesL && parenthesesR && key) {
+          paramKey = key;
+          console.log(index);
+          if (index) {
+            paramIndex = `, ${index}`;
+          }
+        } else {
+          return {
+            startBlock: '',
+            replacement: current,
+            endBlock: '',
+          };
+        }
+
+        return {
+          startBlock: `${indent}| {Object.keys(${items} || []).map((${paramKey}${paramIndex}) => { const ${item} = ${items}[${paramKey}]; return (`,
+          replacement: current.replace(pattern, `$1$2key='{${paramKey}}'`),
+          endBlock: `${indent}| );})}`,
+        };
+      },
+    },
+    {
+      // repeat
       pattern: /^(\s*)(.*)(@repeat='\s*([^\n]+?)\s+as\s+([^\s]+)\s*(,\s+([a-zA-Z0-9_]+)){0,1}\s*')/,
       process: (current, pattern) => {
         const [, indent,,, items, item,, index = 'i'] = current.match(pattern);
@@ -54,7 +84,7 @@ module.exports = function (jsxHelper, pug) {
       },
     },
     {
-    // if
+      // if
       pattern: /^(\s*)(.*)(@if='([^']+)')/,
       process: (current, pattern) => {
         const [, indent,,, condition] = current.match(pattern);
@@ -68,7 +98,7 @@ module.exports = function (jsxHelper, pug) {
       },
     },
     {
-    // unless
+      // unless
       pattern: /^(\s*)(.*)(@unless='([^']+)')/,
       process: (current, pattern) => {
         const [, indent,,, condition] = current.match(pattern);
@@ -82,14 +112,14 @@ module.exports = function (jsxHelper, pug) {
       },
     },
     {
-    // show
+      // show
       pattern: /^(\s*)(.*)(@show='([^']+)')/,
       process: (current, pattern) => ({
         replacement: current.replace(pattern, (whole, p1, p2, p3, p4) => `${p1 + p2}style="{{ display: (${p4.replace(/"/g, '\\"')} ? \\"\\" : \\"none\\") }}"`),
       }),
     },
     {
-    // hide
+      // hide
       pattern: /^(\s*)(.*)(@hide='([^']+)')/,
       process: (current, pattern) => ({
         replacement: current.replace(pattern, (whole, p1, p2, p3, p4) => `${p1 + p2}style="{{ display: (${p4.replace(/"/g, '\\"')} ? \\"none\\" : \\"\\") }}"`),
@@ -120,10 +150,10 @@ module.exports = function (jsxHelper, pug) {
       return replaced.match(/\[\[[0-9]+]]/g) ? fillBlockSpaces(replaced) : replaced;
     };
     return fillBlockSpaces((remainder.match(/\[\[[0-9]+]]/g) || []).join(' '))
-    .replace(/\s+/g, ' ')
-    .replace(/=>\s*([^{]+?[^})]+)/g, '=> { $1 }')
-    .replace(/([a-zA-Z_$][a-zA-Z0-9_]*)(\s*)(=>\s*{)/g, '($1)$2$3')
-    .trim();
+      .replace(/\s+/g, ' ')
+      .replace(/=>\s*([^{]+?[^})]+)/g, (whole, p1) => (p1.search(/[{}]/) !== -1) ? whole : `=> { ${p1} }`)
+      .replace(/([a-zA-Z_$][a-zA-Z0-9_]*)(\s*)(=>\s*{)/g, '($1)$2$3')
+      .trim();
   };
 
   const indentScript = (jsx) => {
@@ -150,7 +180,8 @@ module.exports = function (jsxHelper, pug) {
     const variables = {};
     indentScript(extractScript(jsx))
       .split(/\n/)
-      .map(each => each.replace(/\/\*(.*)?\*\//g, '').replace(/\.\.\.([a-zA-Z_$])/g, '... $1'))
+      .map(each => each.replace(/\/\*(.*)?\*\//g, '')
+        .replace(/\.\.\.([a-zA-Z_$])/g, '... $1'))
       .filter(each => each.trim() !== '')
       .reduce((stack, curr) => {
         const data = {
@@ -160,15 +191,20 @@ module.exports = function (jsxHelper, pug) {
           .replace(/[a-zA-Z0-9_$]+\s*:/g, '"":')
           .replace(/\[\[colon]]/g, ':')} `;
         const type = replaced.trim().substr(0, 1) === '{' ? PUSH : POP;
-        const used = replaced.replace(/\([^)]+\)\s*=>/g, (whole) => {
-          data.local = (`${whole} `).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ')
-            .replace(/\..*?\s+/g, ' ').trim()
-            .split(/\s+/);
+        const used = replaced.replace(/(\([^)]+\)\s*=>|(const|let)\s+[a-zA-Z0-9_$]+)/g, (whole) => {
+          if (whole.search(/^(const|let)\s+[a-zA-Z0-9_$]+$/) === -1) {
+            data.local = (`${whole} `).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ')
+              .replace(/\..*?\s+/g, ' ').trim()
+              .split(/\s+/);
+          } else {
+            data.local = [whole.split(/\s+/)[1]];
+          }
           return ' ';
         }).replace(/<[a-zA-Z].*>/g, ' ').replace(/[^a-zA-Z0-9_.]/g, ' ').replace(/\..*?\s+/g, ' ')
           .trim()
           .split(/\s+/);
         stack.reduce((prev, _curr) => prev.filter(each => _curr.local.indexOf(each) === -1), used)
+        // stack.reduce((prev, _curr) => prev.filter(each => _curr.local.indexOf(each) === -1 && data.local.indexOf(each) === -1), used)
           .forEach((each) => {
             if (each && each.search(/^[0-9]/) === -1) {
               variables[each] = true;
@@ -311,7 +347,7 @@ module.exports = function (jsxHelper, pug) {
   });
 
   const updateJSX = (source, files, rootPath) => {
-    const reservedWords = ['this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+    const reservedWords = ['Object', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
     const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
@@ -358,7 +394,7 @@ module.exports = function (jsxHelper, pug) {
   };
 
   const updateCssClass = (source, files) => {
-  // classNames found
+    // classNames found
     const cssClasses = (source.match(/\s+styleName="[^"]+"/g) || []).reduce((dict, curr) => {
       curr.replace(/(^\s+styleName="|"$)/g, '').split(/\s+/).forEach((chunk) => {
         if (dict.indexOf(chunk) === -1) {
@@ -367,7 +403,7 @@ module.exports = function (jsxHelper, pug) {
       });
       return dict;
     }, []);
-  // not defined classes
+    // not defined classes
     const notDefined = cssClasses.concat();
 
     const promise = new Promise((resolve) => {

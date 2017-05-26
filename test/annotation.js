@@ -5,6 +5,29 @@ const run = require('./helper').run;
 
 /* eslint-disable */
 const tests = [
+['test @for',
+`ul
+  li(@for='item in items') {item.name}
+ul
+  li(@for='(item, key) in items') {item.name}
+ul
+  li(@for='(item, key, index) in items') {item.name}`,
+`<ul>
+  {Object.keys(items || []).map((i) => { const item = items[i]; return (
+    <li key={i}>{item.name}</li>
+  );})}
+</ul>
+<ul>
+  {Object.keys(items || []).map((key) => { const item = items[key]; return (
+    <li key={key}>{item.name}</li>
+  );})}
+</ul>
+<ul>
+  {Object.keys(items || []).map((key, index) => { const item = items[key]; return (
+    <li key={key}>{item.name}</li>
+  );})}
+</ul>`],
+
 ['test @repeat',
 `ul
   li(@repeat='items as item') {item}`,
