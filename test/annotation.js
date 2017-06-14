@@ -28,6 +28,20 @@ ul
   );})}
 </ul>`],
 
+['test @for (complex)',
+`div(@if='after.templates[0]')
+  div(@for='(metric, key) in (allTemplates.filter(e => e.id === after.templates[0])[0] || {}).metrics')
+    | {key} : {metric}`,
+`{(after.templates[0]) && (
+<div>
+  {Object.keys((allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics || []).map((key) => { const metric = (allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics[key]; return (
+      <div key={key}>
+        {key} : {metric}
+      </div>
+    );})}
+</div>
+)}`],
+
 ['test @repeat',
 `ul
   li(@repeat='items as item') {item}`,

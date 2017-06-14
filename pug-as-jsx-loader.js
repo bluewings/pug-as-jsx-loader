@@ -63,9 +63,9 @@ module.exports = function (jsxHelper, pug) {
             endBlock: '',
           };
         }
-
+        const newItems = items.replace(/\{\}/g, '{ }');
         return {
-          startBlock: `${indent}| {Object.keys(${items} || []).map((${paramKey}${paramIndex}) => { const ${item} = ${items}[${paramKey}]; return (`,
+          startBlock: `${indent}| {Object.keys(${newItems} || []).map((${paramKey}${paramIndex}) => { const ${item} = ${newItems}[${paramKey}]; return (`,
           replacement: current.replace(pattern, `$1$2key='{${paramKey}}'`),
           endBlock: `${indent}| );})}`,
         };
@@ -347,7 +347,7 @@ module.exports = function (jsxHelper, pug) {
   });
 
   const updateJSX = (source, files, rootPath) => {
-    const reservedWords = ['Object', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+    const reservedWords = ['Object', 'JSON', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
     const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
@@ -387,7 +387,6 @@ module.exports = function (jsxHelper, pug) {
           '}\n',
           example,
         ].filter(line => line).join('\n') + '\n';
-
         fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
       });
     });
