@@ -52,7 +52,6 @@ module.exports = function (jsxHelper, pug) {
           paramKey = 'i';
         } else if (parenthesesL && parenthesesR && key) {
           paramKey = key;
-          console.log(index);
           if (index) {
             paramIndex = `, ${index}`;
           }
@@ -63,11 +62,11 @@ module.exports = function (jsxHelper, pug) {
             endBlock: '',
           };
         }
-        const newItems = items.replace(/\{\}/g, '{ }');
         return {
-          startBlock: `${indent}| {Object.keys(${newItems} || []).map((${paramKey}${paramIndex}) => { const ${item} = ${newItems}[${paramKey}]; return (`,
+          macro: 'const __macro_for = items => ({ map: mapFn => Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index)) });',
+          startBlock: `${indent}| { __macro_for(${items}).map((${item}, ${paramKey}${paramIndex}) => (`,
           replacement: current.replace(pattern, `$1$2key='{${paramKey}}'`),
-          endBlock: `${indent}| );})}`,
+          endBlock: `${indent}| ))}`,
         };
       },
     },
@@ -346,8 +345,8 @@ module.exports = function (jsxHelper, pug) {
     });
   });
 
-  const updateJSX = (source, files, rootPath) => {
-    const reservedWords = ['Object', 'JSON', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+  const updateJSX = (source, macros, files, rootPath) => {
+    const reservedWords = ['__macro_for', 'function', 'Object', 'JSON', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
     const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
@@ -375,6 +374,7 @@ module.exports = function (jsxHelper, pug) {
       // eslint-disable-next-line prefer-template
         const jsxOutput = [
           "import React from 'react';\n",
+          ...Object.keys(macros),
           exportsFn,
           '  return (',
         // source,
@@ -508,6 +508,8 @@ module.exports = function (jsxHelper, pug) {
       lines: [],
     }).lines.join('\n');
 
+    const macros = {};
+
     // process annotations
     const transformed = replaced.split(/\n/).reduce((dict, curr) => {
       // attach remaind end block codes.
@@ -522,7 +524,10 @@ module.exports = function (jsxHelper, pug) {
       // parse annotations
       annotations.forEach((annotation) => {
         if (curr.match(annotation.pattern)) {
-          const { replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
+          const { macro, replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
+          if (macro) {
+            macros[macro] = true;
+          }
           if (startBlock) {
             if (startBlock.search(/[^\s]/) !== -1) {
               dict.lines.push(`${Array(startBlock.search(/[^\s]/) + 1).join(' ')}// ${LINE_DIVIDER}`);
@@ -572,10 +577,9 @@ module.exports = function (jsxHelper, pug) {
         return `<${p1}${p2 || ''} />`;
       }
       return whole;
-    });
-
+    }).replace(/\{\}/g, '{ }');
     Promise.all([
-      updateJSX(replaced, files, root),
+      updateJSX(replaced, macros, files, root),
       updateCssClass(replaced, files),
     ])
     .then(

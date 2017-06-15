@@ -13,19 +13,19 @@ ul
 ul
   li(@for='(item, key, index) in items') {item.name}`,
 `<ul>
-  {Object.keys(items || []).map((i) => { const item = items[i]; return (
+  { __macro_for(items).map((item, i) => (
     <li key={i}>{item.name}</li>
-  );})}
+    ))}
 </ul>
 <ul>
-  {Object.keys(items || []).map((key) => { const item = items[key]; return (
+  { __macro_for(items).map((item, key) => (
     <li key={key}>{item.name}</li>
-  );})}
+    ))}
 </ul>
 <ul>
-  {Object.keys(items || []).map((key, index) => { const item = items[key]; return (
+  { __macro_for(items).map((item, key, index) => (
     <li key={key}>{item.name}</li>
-  );})}
+    ))}
 </ul>`],
 
 ['test @for (complex)',
@@ -34,11 +34,11 @@ ul
     | {key} : {metric}`,
 `{(after.templates[0]) && (
 <div>
-  {Object.keys((allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics || []).map((key) => { const metric = (allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics[key]; return (
+  { __macro_for((allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics).map((metric, key) => (
       <div key={key}>
         {key} : {metric}
       </div>
-    );})}
+      ))}
 </div>
 )}`],
 
