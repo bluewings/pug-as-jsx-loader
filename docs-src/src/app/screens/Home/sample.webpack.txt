@@ -8,13 +8,9 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.pug$/,
+        test: /\.(pug|js|jsx)$/,
         exclude: /node_modules/,
         loaders: ['babel?presets[]=es2015&presets[]=react', 'pug-as-jsx'],
-      },
-      {
-        test: /\.(js|jsx)$/,
-        loaders: ['babel?presets[]=es2015&presets[]=react'],
       },
     ],
   },

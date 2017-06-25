@@ -1,3 +1,13 @@
+---------- inline pug template
+// inline pug template usage
+function Component {
+  return pug`
+    div
+      h1 My Component
+      p This is my component using pug.
+  `;
+}
+
 ---------- hello world
 div
   h1.greeting(onClick='{greeting.bind(this)}')
