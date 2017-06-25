@@ -454,33 +454,7 @@ module.exports = function (jsxHelper, pug) {
     });
   };
 
-  return function (source) {
-    this.cacheable();
-
-    const callback = this.async();
-
-    // related file names
-    const files = {
-      path: this.resourcePath.replace(/\/[^/]+$/, ''),
-      js: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.js'),
-      jsx: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.pug.transpiled.jsx'),
-      scss: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.scss'),
-      pug: `./${this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
-    };
-
-    const fileTypes = ['path', 'js', 'jsx', 'scss'];
-    fileTypes.forEach((type) => {
-      if (files[type].search(/^\//) === -1) {
-        files[type] = path.join(__dirname, files[type]);
-      }
-    });
-
-    let { root } = querystring.parse((this.query || '').replace(/^\?/, ''));
-    if (root) {
-      root = root.replace(/__\//g, '../');
-    }
-    // root = '../../src/app'
-
+  const renderPug = (source) => {
     // prepare for case sensitive
     let replaced = source
       .replace(/__jsx=/g, 'jsx-syntax--=')
@@ -578,6 +552,38 @@ module.exports = function (jsxHelper, pug) {
       }
       return whole;
     }).replace(/\{\}/g, '{ }');
+    return { replaced, macros };
+  };
+
+  return function (source) {
+    this.cacheable();
+
+    const callback = this.async();
+
+    // related file names
+    const files = {
+      path: this.resourcePath.replace(/\/[^/]+$/, ''),
+      js: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.js'),
+      jsx: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.pug.transpiled.jsx'),
+      scss: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.scss'),
+      pug: `./${this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
+    };
+
+    const fileTypes = ['path', 'js', 'jsx', 'scss'];
+    fileTypes.forEach((type) => {
+      if (files[type].search(/^\//) === -1) {
+        files[type] = path.join(__dirname, files[type]);
+      }
+    });
+
+    let { root } = querystring.parse((this.query || '').replace(/^\?/, ''));
+    if (root) {
+      root = root.replace(/__\//g, '../');
+    }
+    // root = '../../src/app'
+
+    const { replaced, macros } = renderPug(source);
+
     Promise.all([
       updateJSX(replaced, macros, files, root),
       updateCssClass(replaced, files),
