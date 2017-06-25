@@ -27,10 +27,11 @@ const tests = [
 }
 function Component2(props) {
   return pug\`ul
-  li(@repeat='props.items as item')
+  li(@for='item in props.items')
     a {item.message}\`;
 }`,
-`function Component(props) {
+`const __macro_for = items => ({ map: mapFn => Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index)) });
+function Component(props) {
   return (
     <div>
       <h4>hello world</h4>
@@ -40,18 +41,18 @@ function Component2(props) {
 function Component2(props) {
   return (
     <ul>
-      {(props.items || []).map((item, i) =>
+      { __macro_for(props.items).map((item, i) => (
         <li key={i}>
           <a>{item.message}</a>
         </li>
-      )}
+        ))}
     </ul>
   );
 }`],
 ];
 /* eslint-enable */
 
-describe('simple', () => {
+describe('inline-pug-templates', () => {
   tests.forEach(([name, input, expected]) => {
     it(name, () => run(input).then((output) => {
       output.output.should.be.eql(expected);

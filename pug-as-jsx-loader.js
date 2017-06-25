@@ -347,8 +347,9 @@ module.exports = function (jsxHelper, pug) {
 
   const updateJSX = (source, macros, files, rootPath, isJsFile) => {
     if (isJsFile) {
+      const output = [...Object.keys(macros), source].filter(e => e).join('\n');
       return new Promise((resolve, reject) => {
-        fs.writeFile(files.jsx, source, 'utf8', err => (err ? reject(err) : resolve(source)));
+        fs.writeFile(files.jsx, output, 'utf8', err => (err ? reject(err) : resolve(output)));
       });
     }
 
@@ -593,10 +594,12 @@ module.exports = function (jsxHelper, pug) {
       isJsFile = true;
     }
     let replaced;
-    let macros;
+    let macros = {};
     if (isJsFile) {
       replaced = source.replace(/\n(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, p1, p2, p3) => {
-        const rendered = jsxHelper.beautify(renderPug(p3.trim()).replaced, {
+        const result = renderPug(p3.trim());
+        macros = Object.assign({}, macros, result.macros);
+        const rendered = jsxHelper.beautify(result.replaced, {
           indent: p1.length + 2,
           maxLineLength: 100,
           lineDivider: LINE_DIVIDER,
