@@ -570,7 +570,7 @@ module.exports = function (jsxHelper, pug) {
     const files = {
       path: this.resourcePath.replace(/\/[^/]+$/, ''),
       js: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.js'),
-      jsx: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.pug.transpiled.jsx'),
+      jsx: this.resourcePath.replace(/(\.[a-zA-Z0-9]+)$/, '$1.transpiled.jsx'),
       scss: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.scss'),
       pug: `./${this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
     };
