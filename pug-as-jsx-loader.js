@@ -345,7 +345,13 @@ module.exports = function (jsxHelper, pug) {
     });
   });
 
-  const updateJSX = (source, macros, files, rootPath) => {
+  const updateJSX = (source, macros, files, rootPath, isJsFile) => {
+    if (isJsFile) {
+      return new Promise((resolve, reject) => {
+        fs.writeFile(files.jsx, source, 'utf8', err => (err ? reject(err) : resolve(source)));
+      });
+    }
+
     const reservedWords = ['__macro_for', 'function', 'Object', 'JSON', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
     const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
@@ -582,11 +588,33 @@ module.exports = function (jsxHelper, pug) {
     }
     // root = '../../src/app'
 
-    const { replaced, macros } = renderPug(source);
+    let isJsFile = false;
+    if (this.resourcePath.split('.').pop().search(/^js/) !== -1 || source.match(/\s+pug`[\s\S]+`/)) {
+      isJsFile = true;
+    }
+    let replaced;
+    let macros;
+    if (isJsFile) {
+      replaced = source.replace(/\n(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, p1, p2, p3) => {
+        const rendered = jsxHelper.beautify(renderPug(p3.trim()).replaced, {
+          indent: p1.length + 2,
+          maxLineLength: 100,
+          lineDivider: LINE_DIVIDER,
+        });
+        return `\n${p1}${p2} (\n${rendered}\n${p1})`;
+      });
+    } else {
+      const rendered = renderPug(source);
+      replaced = rendered.replaced;
+      macros = rendered.macros;
+    }
+    if (source === replaced) {
+      return callback(null, source);
+    }
 
     Promise.all([
-      updateJSX(replaced, macros, files, root),
-      updateCssClass(replaced, files),
+      updateJSX(replaced, macros, files, root, isJsFile),
+      isJsFile ? Promise.resolve() : updateCssClass(replaced, files),
     ])
     .then(
       (result) => {

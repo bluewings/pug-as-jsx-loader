@@ -14,6 +14,7 @@ exports.run = function run(input, addOptions = {}) {
 
       const result = {
         jsx,
+        output,
         variables: [],
         components: [],
       };
