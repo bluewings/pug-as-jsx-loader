@@ -23,7 +23,7 @@ module.exports = {
       {
         exclude: [
           /\.html$/,
-          /\.pug$/,  // 1. exclude pug files from file-loader  ← add this line
+          /\.pug$/,  // 1. exclude pug files from file-loader        ← add this line
           /\.(js|jsx)$/,
           /\.css$/,
           /\.json$/,
@@ -37,7 +37,7 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]',
         },
       },
-      // 2. add pug loader                                     ← add this block below
+      // 2. add pug loader                                           ← add this block below
       {
         test: /\.pug$/,
         include: paths.appSrc,
