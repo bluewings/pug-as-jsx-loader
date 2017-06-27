@@ -583,7 +583,7 @@ module.exports = function (jsxHelper, pug) {
       }
     });
 
-    let { root } = querystring.parse((this.query || '').replace(/^\?/, ''));
+    let { root } = typeof this.query === 'object' ? (this.query || {}) : querystring.parse((this.query || '').replace(/^\?/, ''));
     if (root) {
       root = root.replace(/__\//g, '../');
     }
