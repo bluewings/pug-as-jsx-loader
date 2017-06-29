@@ -1,7 +1,10 @@
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const querystring = require('querystring');
+
+const isWin = (typeof os.platform === 'function' && os.platform().search(/win/i) !== -1);
 
 module.exports = function (jsxHelper, pug) {
   if (!pug) {
@@ -576,13 +579,14 @@ module.exports = function (jsxHelper, pug) {
       pug: `./${this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
     };
 
-    const fileTypes = ['path', 'js', 'jsx', 'scss'];
-    fileTypes.forEach((type) => {
-      if (files[type].search(/^\//) === -1) {
-        files[type] = path.join(__dirname, files[type]);
-      }
-    });
-
+    if (!isWin) {
+      const fileTypes = ['path', 'js', 'jsx', 'scss'];
+      fileTypes.forEach((type) => {
+        if (files[type].search(/^\//) === -1) {
+          files[type] = path.join(__dirname, files[type]);
+        }
+      });
+    }
     let { root } = typeof this.query === 'object' ? (this.query || {}) : querystring.parse((this.query || '').replace(/^\?/, ''));
     if (root) {
       root = root.replace(/__\//g, '../');
