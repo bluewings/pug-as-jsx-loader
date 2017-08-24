@@ -6,7 +6,7 @@ const querystring = require('querystring');
 
 const isWin = (typeof os.platform === 'function' && os.platform().search(/win/i) !== -1);
 
-module.exports = function (jsxHelper, pug) {
+module.exports = function (jsxHelper, { pug, loaderUtils }) {
   if (!pug) {
     pug = self.pug;
   }
@@ -348,7 +348,7 @@ module.exports = function (jsxHelper, pug) {
     });
   });
 
-  const updateJSX = (source, macros, files, rootPath, isJsFile) => {
+  const updateJSX = (source, macros, files, rootPath, isJsFile, options = {}) => {
     if (isJsFile) {
       const output = [...Object.keys(macros), source].filter(e => e).join('\n');
       return new Promise((resolve, reject) => {
@@ -357,16 +357,26 @@ module.exports = function (jsxHelper, pug) {
     }
 
     const reservedWords = ['__macro_for', 'function', 'Object', 'String', 'Number', 'Array', 'JSON', 'Math', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
-    const components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
+    let components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
         distinct.push(tagName);
       }
       return distinct;
     }, []).sort();
+    let importComponents = [];
+    if (options.resolveComponents) {
+      importComponents = components.map((name) => {
+        if (options.resolveComponents[name]) {
+          return { name, from: options.resolveComponents[name] };
+        }
+        return null;
+      }).filter(e => e);
+    }
+    components = components.filter(name => !(options.resolveComponents && options.resolveComponents[name]));
     const variables = extractVariables(source)
-    .filter(ref => ref && reservedWords.indexOf(ref) === -1)
-    .sort();
+      .filter(ref => ref && reservedWords.indexOf(ref) === -1)
+      .sort();
     const refs = [...variables, ...components];
 
     return new Promise((resolve, reject) => {
@@ -383,7 +393,9 @@ module.exports = function (jsxHelper, pug) {
         }
       // eslint-disable-next-line prefer-template
         const jsxOutput = [
-          "import React from 'react';\n",
+          "import React from 'react';",
+          ...importComponents.map(({ name, from }) => `import ${name} from '${from}';\n`),
+          '\n',
           ...Object.keys(macros),
           exportsFn,
           '  return (',
@@ -396,7 +408,7 @@ module.exports = function (jsxHelper, pug) {
           '  );',
           '}\n',
           example,
-        ].filter(line => line).join('\n') + '\n';
+        ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n') + '\n';
         fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
       });
     });
@@ -568,6 +580,11 @@ module.exports = function (jsxHelper, pug) {
   return function (source) {
     this.cacheable();
 
+    let options = {};
+    if (loaderUtils && typeof loaderUtils.getOptions === 'function') {
+      options = loaderUtils.getOptions(this) || {};
+    }
+
     const callback = this.async();
 
     // related file names
@@ -620,7 +637,7 @@ module.exports = function (jsxHelper, pug) {
     }
 
     Promise.all([
-      updateJSX(replaced, macros, files, root, isJsFile),
+      updateJSX(replaced, macros, files, root, isJsFile, options),
       isJsFile ? Promise.resolve() : updateCssClass(replaced, files),
     ])
     .then(

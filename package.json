@@ -1,6 +1,6 @@
 {
   "name": "pug-as-jsx-loader",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "pug loader module for webpack",
   "author": {
     "name": "Sung Won Cha",
@@ -17,6 +17,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "glob": "^7.1.1",
+    "loader-utils": "^1.1.0",
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
