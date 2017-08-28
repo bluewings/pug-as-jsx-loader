@@ -6,3 +6,11 @@
     | To get started, edit&nbsp;
     code src/App.js
     | &nbsp;and save to reload.
+  .App-content
+    hr
+    button(type='button', onClick='{this.handleClick}') click me!
+    ul
+      li(@for='(name, i) in characters')
+        | {name}
+        button(type='button',
+          onClick='{this.handleRemove.bind(this, name, i)}') check
