@@ -5,12 +5,12 @@ const run = require('./helper').run;
 
 describe('variables and components', () => {
   it('simple extract',
-    () => run("li(@repeat='items as item')\n  ItemDetail(item='{item}')").then((output) => {
-      output.variables.length.should.be.eql(1);
-      output.variables.should.containEql('items');
-      output.components.length.should.be.eql(1);
-      output.components.should.containEql('ItemDetail');
-    }));
+  () => run("li(@repeat='items as item')\n  ItemDetail(item='{item}')").then((output) => {
+    output.variables.length.should.be.eql(1);
+    output.variables.should.containEql('items');
+    output.components.length.should.be.eql(1);
+    output.components.should.containEql('ItemDetail');
+  }));
 
   it('ignore reserved keyword: React, this',
     () => run('div\n  | {React.Children.only(this.props.children)}').then((output) => {
@@ -31,5 +31,15 @@ describe('variables and components', () => {
     () => run('CodeMirror(options=\'{{ mode: "yaml", styleActiveLine: true, lineNumbers: lineNum, lineWrapping: true, theme: "monokai" }}\')').then((output) => {
       output.variables.length.should.be.eql(1);
       output.variables.should.containEql('lineNum');
+    }));
+
+  it('ignore object key',
+    () => run(`div
+    ChildComponent(@if='ChildComponent')
+    div(@if='!ChildComponent')
+      h1 has no child`)
+    .then((output) => {
+      output.variables.length.should.be.eql(0);
+      output.components.length.should.be.eql(1);
     }));
 });

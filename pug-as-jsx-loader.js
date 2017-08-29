@@ -326,7 +326,7 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
         example.push('    } = this;');
       }
       example.push('');
-      if (variables.length === 0) {
+      if (variables.length === 0 && components.length === 0) {
         example.push('    return template.call(this);');
       } else {
         example.push('    return template.call(this, {');
@@ -377,6 +377,14 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
     const variables = extractVariables(source)
       .filter(ref => ref && reservedWords.indexOf(ref) === -1)
       .sort();
+
+    components.forEach((e) => {
+      const index = variables.indexOf(e);
+      if (index !== -1) {
+        variables.splice(index, 1);
+      }
+    });
+
     const refs = [...variables, ...components];
 
     return new Promise((resolve, reject) => {
