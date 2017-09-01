@@ -356,7 +356,7 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
       });
     }
 
-    const reservedWords = ['__macro_for', 'function', 'Object', 'String', 'Number', 'Array', 'JSON', 'Math', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+    const reservedWords = ['__macro_for', 'function', 'Object', 'String', 'Number', 'Array', 'JSON', 'Math', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', 'typeof', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
     let components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
