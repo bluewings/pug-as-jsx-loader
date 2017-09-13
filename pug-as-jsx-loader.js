@@ -374,10 +374,19 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
       }).filter(e => e);
     }
     components = components.filter(name => !(options.resolveComponents && options.resolveComponents[name]));
-    const variables = extractVariables(source)
+    let variables = extractVariables(source)
       .filter(ref => ref && reservedWords.indexOf(ref) === -1)
       .sort();
-
+    let importVariables = [];
+    if (options.resolveVariables) {
+      importVariables = variables.map((name) => {
+        if (options.resolveVariables[name]) {
+          return { name, from: options.resolveVariables[name] };
+        }
+        return null;
+      }).filter(e => e);
+    }
+    variables = variables.filter(name => !(options.resolveVariables && options.resolveVariables[name]));
     components.forEach((e) => {
       const index = variables.indexOf(e);
       if (index !== -1) {
@@ -403,6 +412,7 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
         const jsxOutput = [
           "import React from 'react';",
           ...importComponents.map(({ name, from }) => `import ${name} from '${from}';\n`),
+          ...importVariables.map(({ name, from }) => `import ${name} from '${from}';\n`),
           '\n',
           ...Object.keys(macros),
           exportsFn,
