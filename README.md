@@ -1,5 +1,6 @@
 # pug-as-jsx loader for webpack
 
+[![npm badge][npm-badge-png]][package-url]
 
 ## [Try it out here...](https://bluewings.github.io/pug-as-jsx-loader/)
 
@@ -84,3 +85,6 @@ class Report extends React.Component {
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
+
+[npm-badge-png]: https://nodei.co/npm/pug-as-jsx-loader.png
+[package-url]: https://www.npmjs.com/package/pug-as-jsx-loader
