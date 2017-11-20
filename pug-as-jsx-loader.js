@@ -431,7 +431,11 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
           '}\n',
           example,
         ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n') + '\n';
-        fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
+        if (options.transpiledFile) {
+          fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
+        } else {
+          resolve(jsxOutput);
+        }
       });
     });
   };
@@ -626,12 +630,11 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
         }
       });
     }
-    let { root, transpiledFile = true } = typeof this.query === 'object' ? (this.query || {}) : querystring.parse((this.query || '').replace(/^\?/, ''));
+    let { root } = typeof this.query === 'object' ? (this.query || {}) : querystring.parse((this.query || '').replace(/^\?/, ''));
     if (root) {
       root = root.replace(/__\//g, '../');
     }
     // root = '../../src/app'
-    options.transpiledFile = transpiledFile;
 
     let isJsFile = false;
     if (this.resourcePath.split('.').pop().search(/^js/) !== -1 || source.match(/\s+pug`[\s\S]+`/)) {

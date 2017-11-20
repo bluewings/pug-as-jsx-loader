@@ -166,7 +166,13 @@ module.exports = {
         include: paths.appSrc,
         use: [
           require.resolve('babel-loader'),
-          require.resolve('pug-as-jsx-loader'),
+          // require.resolve('pug-as-jsx-loader'),
+          {
+            loader: require.resolve('pug-as-jsx-loader'),
+            options: {
+              transpiledFile: false,
+            },
+          },
         ],
       },
       // Process JS with Babel.
