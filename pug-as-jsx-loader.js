@@ -66,7 +66,22 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
           };
         }
         return {
-          macro: 'const __macro_for = items => ({ map: mapFn => Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index)) });',
+          macro: `const IS_MAP_SENTINEL = '@@__IMMUTABLE_MAP__@@';
+const IS_LIST_SENTINEL = '@@__IMMUTABLE_LIST__@@';
+const __macro_for = items => ({
+  map: (mapFn) => {
+    let mapFns = [];
+    if (items && items[IS_MAP_SENTINEL]) {
+      items.mapEntries(([key, value], i) => mapFns.push(mapFn(value, key, i)));
+    } else if (items && items[IS_LIST_SENTINEL]) {
+      items.forEach((value, i) => mapFns.push(mapFn(value, i, i)));
+    } else {
+      mapFns = Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index));
+    }
+    return mapFns;
+  },
+});
+`,
           startBlock: `${indent}| { __macro_for(${items}).map((${item}, ${paramKey}${paramIndex}) => (`,
           replacement: current.replace(pattern, `$1$2key='{${paramKey}}'`),
           endBlock: `${indent}| ))}`,

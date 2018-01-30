@@ -1,6 +1,6 @@
 {
   "name": "pug-as-jsx-loader",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "pug loader module for webpack",
   "author": {
     "name": "Sung Won Cha",
