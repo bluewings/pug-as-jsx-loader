@@ -36,9 +36,13 @@ const __macro_for = items => ({
   map: (mapFn) => {
     let mapFns = [];
     if (items && items[IS_MAP_SENTINEL]) {
-      items.mapEntries(([key, value], i) => mapFns.push(mapFn(value, key, i)));
+      items.mapEntries(([key, value], i) => {
+        mapFns.push(mapFn(value, key, i));
+      });
     } else if (items && items[IS_LIST_SENTINEL]) {
-      items.forEach((value, i) => mapFns.push(mapFn(value, i, i)));
+      items.forEach((value, i) => {
+        mapFns.push(mapFn(value, i, i));
+      });
     } else {
       mapFns = Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index));
     }
