@@ -195,7 +195,7 @@ module.exports = (eslint = {}) => {
       replaced = replaced
         .replace(new RegExp(constant.LESS_THAN, 'g'), '<')
         .replace(new RegExp(constant.GREATER_THAN, 'g'), '>')
-        .replace(/jsx-syntax--=/g, '');
+        .replace(/jsx-syntax-[0-9]+--=/g, '');
       return replaced.replace(/\s+$/gm, '');
     },
   };

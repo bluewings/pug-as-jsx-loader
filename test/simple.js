@@ -43,6 +43,13 @@ const tests = [
 `<div>
   <WrappedComponent data-attr="attr" id="wrap" {...props} />
 </div>`],
+
+['use multiple jsx expressions',
+`div
+  WrappedComponent(id='wrap', __jsx='{...props}', __jsx='{...otherProps}')`,
+`<div>
+  <WrappedComponent id="wrap" {...props} {...otherProps} />
+</div>`],
 ];
 /* eslint-enable */
 
