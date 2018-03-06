@@ -22,7 +22,7 @@ var jsx = require("pug-as-jsx-loader!./file.pug");
 ```
 
 ### [pug | jade](https://pugjs.org) template (./file.pug)
-```
+```pug
 div
   h1 {period.start} ~ {period.end}
   ul
@@ -32,7 +32,7 @@ div
 ```
 
 ### → transpiled function
-```
+```jsx
 import React from 'react';
 
 export default function (params = {}) {
@@ -58,7 +58,7 @@ export default function (params = {}) {
 ```
 
 ### import pug template
-```
+```jsx
 import React from 'react';
 
 import template from './file.pug';      // ← import pug template
