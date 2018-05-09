@@ -1,5 +1,7 @@
 # pug-as-jsx loader for webpack
 
+[![npm version](https://badge.fury.io/js/pug-as-jsx-loader.svg)](https://badge.fury.io/js/pug-as-jsx-loader)
+
 [![npm badge][npm-badge-png]][package-url]
 
 ## [Try it out here...](https://bluewings.github.io/pug-as-jsx-loader/)
