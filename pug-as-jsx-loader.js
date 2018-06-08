@@ -29,8 +29,6 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
     components: {},
   };
 
-  const store = {};
-
   const LINE_DIVIDER = '__line_divider__';
 
   const { LESS_THAN, GREATER_THAN } = jsxHelper.constant;
@@ -157,7 +155,7 @@ const __macro_for = items => ({
       pattern: /^import\s+([^\s]+)\s+=>\s+([^\s]+)$/,
       process: (params, { store, files }) => {
         const [, src, name] = params;
-        const from = src.replace(/^(.[a-zA-Z0-9]+)$/, `./${files.name}$1`);
+        const from = src.replace(/^(.[a-zA-Z0-9]+)$/, `${files.name}$1`);
         store.importCss = [
           ...(store.importCss || []),
         { name, from },
@@ -389,7 +387,7 @@ const __macro_for = items => ({
     });
   });
 
-  const updateJSX = (source, macros, files, rootPath, isJsFile, options = {}) => {
+  const updateJSX = (source, macros, store, files, rootPath, isJsFile, options = {}) => {
     if (isJsFile) {
       const output = [...Object.keys(macros), source].filter(e => e).join('\n');
       return new Promise((resolve, reject) => {
@@ -552,7 +550,8 @@ const __macro_for = items => ({
     });
   };
 
-  const renderPug = (source, files) => {
+  const renderPug = (source, { store, files }) => {
+
     // prepare for case sensitive
     let replaced = source
       .replace(/__jsx=/g, () => {
@@ -686,6 +685,8 @@ const __macro_for = items => ({
       pug: `./${this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
     };
 
+    const store = {};
+
     if (!isWin) {
       const fileTypes = ['path', 'js', 'jsx', 'scss'];
       fileTypes.forEach((type) => {
@@ -708,7 +709,7 @@ const __macro_for = items => ({
     let macros = {};
     if (isJsFile) {
       replaced = source.replace(/\n(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, p1, p2, p3) => {
-        const result = renderPug(p3.trim(), files);
+        const result = renderPug(p3.trim(), { store, files });
         macros = Object.assign({}, macros, result.macros);
         const rendered = jsxHelper.beautify(result.replaced, {
           indent: p1.length + 2,
@@ -718,7 +719,7 @@ const __macro_for = items => ({
         return `\n${p1}${p2} (\n${rendered}\n${p1})`;
       });
     } else {
-      const rendered = renderPug(source, files);
+      const rendered = renderPug(source, { store, files });
       replaced = rendered.replaced;
       macros = rendered.macros;
     }
@@ -727,7 +728,7 @@ const __macro_for = items => ({
     }
 
     Promise.all([
-      updateJSX(replaced, macros, files, root, isJsFile, options),
+      updateJSX(replaced, macros, store, files, root, isJsFile, options),
       isJsFile ? Promise.resolve() : updateCssClass(replaced, files),
     ])
     .then(
