@@ -29,6 +29,8 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
     components: {},
   };
 
+  const store = {};
+
   const LINE_DIVIDER = '__line_divider__';
 
   const { LESS_THAN, GREATER_THAN } = jsxHelper.constant;
@@ -147,6 +149,24 @@ const __macro_for = items => ({
       process: (current, pattern) => ({
         replacement: current.replace(pattern, (whole, p1, p2, p3, p4) => `${p1 + p2}style="{{ display: (${p4.replace(/"/g, '\\"')} ? \\"none\\" : \\"\\") }}"`),
       }),
+    },
+  ];
+
+  const cmtAnnots = [
+    {
+      pattern: /^import\s+([^\s]+)\s+=>\s+([^\s]+)$/,
+      process: (params, { store, files }) => {
+        const [, src, name] = params;
+        const from = src.replace(/^(.[a-zA-Z0-9]+)$/, `./${files.name}$1`);
+        store.importCss = [
+          ...(store.importCss || []),
+        { name, from },
+        ];
+        store.ignoreVars = [
+          ...(store.ignoreVars || []),
+          name,
+        ];
+      },
     },
   ];
 
@@ -309,7 +329,7 @@ const __macro_for = items => ({
       relativePath = `./${relativePath}`;
     }
   // path명의 마지막이 컴포넌트명이 다른 경우, 개별 파일로 직접 연결되는 케이스
-    if (relativePath.split('/').pop() !== component) {
+    if (component && relativePath.split('/').pop() !== component) {
       relativePath = `${relativePath}/${component}`.replace(/[/]+/g, '/');
     }
     return relativePath;
@@ -381,7 +401,13 @@ const __macro_for = items => ({
       });
     }
 
-    const reservedWords = ['__macro_for', 'function', 'Object', 'String', 'Number', 'Array', 'JSON', 'Math', 'null', 'this', 'return', 'true', 'false', 'new', 'event', 'React', 'typeof', LINE_DIVIDER, LESS_THAN, GREATER_THAN];
+    const reservedWords = [
+      '__macro_for', 'function', 'import',
+      'Object', 'String', 'Number', 'Array',
+      'JSON', 'Math', 'null', 'this',
+      'return', 'true', 'false', 'new', 'event', 'React', 'typeof',
+      LINE_DIVIDER, LESS_THAN, GREATER_THAN,
+    ];
     let components = (source.match(/<([A-Z][a-zA-Z0-9_]+)/g) || []).reduce((distinct, curr) => {
       const tagName = curr.substr(1);
       if (tagName && distinct.indexOf(tagName) === -1) {
@@ -411,7 +437,8 @@ const __macro_for = items => ({
         return null;
       }).filter(e => e);
     }
-    variables = variables.filter(name => !(options.resolveVariables && options.resolveVariables[name]));
+    variables = variables.filter(name =>
+      !(options.resolveVariables && options.resolveVariables[name]) && (store.ignoreVars || []).indexOf(name) === -1);
     components.forEach((e) => {
       const index = variables.indexOf(e);
       if (index !== -1) {
@@ -419,11 +446,12 @@ const __macro_for = items => ({
       }
     });
 
-    const refs = [...variables, ...components];
+    const refs = [...variables, ...components].filter((e) => (store.ignoreVars || []).indexOf(e) === -1);
 
     return new Promise((resolve, reject) => {
       getUsageExample(components, variables, files, rootPath).then((example) => {
         const MAX_LINE_LENGTH = 100;
+        const importCss = store.importCss || [];
         let exportsFn;
         if (refs.length > 0) {
           exportsFn = `export default function (params = {}) {\n  const { ${refs.join(', ')} } = params;`;
@@ -433,11 +461,12 @@ const __macro_for = items => ({
         } else {
           exportsFn = 'export default function () {';
         }
-      // eslint-disable-next-line prefer-template
-        const jsxOutput = [
+        // eslint-disable-next-line prefer-template
+        const jsxOutput = `${[
           "import React from 'react';",
           ...importComponents.map(({ name, from }) => `import ${name} from '${from}';\n`),
           ...importVariables.map(({ name, from }) => `import ${name} from '${from}';\n`),
+          ...importCss.map(({ name, from }) => `import ${name} from '${from}';\n`),
           '\n',
           ...Object.keys(macros),
           exportsFn,
@@ -451,7 +480,7 @@ const __macro_for = items => ({
           '  );',
           '}\n',
           example,
-        ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n') + '\n';
+        ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n')  }\n`;
         if (options.transpiledFile) {
           fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
         } else {
@@ -523,7 +552,7 @@ const __macro_for = items => ({
     });
   };
 
-  const renderPug = (source) => {
+  const renderPug = (source, files) => {
     // prepare for case sensitive
     let replaced = source
       .replace(/__jsx=/g, () => {
@@ -602,6 +631,16 @@ const __macro_for = items => ({
     // render to html and restore case sensitive
     replaced = pug.render(replaced, { pretty: true }).replace(/upper___([a-zA-Z])/g, (whole, p1) => p1.toUpperCase()).replace(/\{([^{}]+)\}/g, (whole, p1) => `{${p1.replace(/&quot;/g, '"')}}`);
 
+    replaced = replaced.replace(/<!--\s*@(.*?)\s*-->/g, (whole, p1) => {
+      cmtAnnots.forEach((annot) => {
+        const matches = p1.match(annot.pattern);
+        if (matches) {
+          annot.process(matches, { store, files });
+        }
+      });
+      return '';
+    });
+
     // fixes
     replaced = replaced
       .replace(/ class="/g, ' className="')
@@ -639,6 +678,7 @@ const __macro_for = items => ({
 
     // related file names
     const files = {
+      name: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, ''),
       path: this.resourcePath.replace(/\/[^/]+$/, ''),
       js: this.resourcePath.replace(/\.[a-zA-Z0-9]+$/, '.js'),
       jsx: this.resourcePath.replace(/(\.[a-zA-Z0-9]+)$/, '$1.transpiled.jsx'),
@@ -668,7 +708,7 @@ const __macro_for = items => ({
     let macros = {};
     if (isJsFile) {
       replaced = source.replace(/\n(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, p1, p2, p3) => {
-        const result = renderPug(p3.trim());
+        const result = renderPug(p3.trim(), files);
         macros = Object.assign({}, macros, result.macros);
         const rendered = jsxHelper.beautify(result.replaced, {
           indent: p1.length + 2,
@@ -678,7 +718,7 @@ const __macro_for = items => ({
         return `\n${p1}${p2} (\n${rendered}\n${p1})`;
       });
     } else {
-      const rendered = renderPug(source);
+      const rendered = renderPug(source, files);
       replaced = rendered.replaced;
       macros = rendered.macros;
     }
