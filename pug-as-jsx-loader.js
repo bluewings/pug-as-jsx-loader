@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const querystring = require('querystring');
+const codemod = require('./lib/codemod');
 
 const isWin = (typeof os.platform === 'function' && os.platform().search(/win/i) !== -1);
 
@@ -478,7 +479,16 @@ const __macro_for = items => ({
           '  );',
           '}\n',
           example,
-        ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n')  }\n`;
+        ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n')}\n`;
+
+        if (options.autoUpdateJsFile) {
+          codemod(jsxOutput, files, {
+            ...options,
+            importCss,
+            reservedWords,
+          });
+        }
+
         if (options.transpiledFile) {
           fs.writeFile(files.jsx, jsxOutput, 'utf8', err => (err ? reject(err) : resolve(jsxOutput)));
         } else {
