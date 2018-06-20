@@ -35,6 +35,13 @@ const tests = [
   </Modal.Header>
   <Modal.Body>{ body }</Modal.Body>
 </Modal>`],
+
+['className conflict',
+`a.nav-link
+  i(className='{icons[name]}')`,
+`<a className="nav-link">
+  <i className={icons[name]} />
+</a>`]
 ];
 /* eslint-enable */
 

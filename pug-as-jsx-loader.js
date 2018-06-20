@@ -169,12 +169,15 @@ const __macro_for = items => ({
     },
   ];
 
-  const mergeClassNameProperty = jsx => jsx.replace(/\s+className=("([^"]+)"(.*)\s+className={(.*?)}((\s+[a-zA-Z0-9]+=)|(\s*>)))/g, (whole, p1, p2, p3, p4, p5) => {
-    if (p3.search(/className=/) !== -1) {
-      return ` className=${mergeClassNameProperty(p1)}`;
-    }
-    return ` className={"${p2} " + (${p4})}${p3} ${p5}`;
-  });
+  const mergeClassNameProperty = jsx => jsx
+    .replace(/></g, '>__temp_new_line__\n<')
+    .replace(/\s+className=("([^"]+)"(.*)\s+className={(.*?)}((\s+[a-zA-Z0-9]+=)|(\s*>)))/g, (whole, p1, p2, p3, p4, p5) => {
+      if (p3.search(/className=/) !== -1) {
+        return ` className=${mergeClassNameProperty(p1)}`;
+      }
+      return ` className={"${p2} " + (${p4})}${p3} ${p5}`;
+    })
+    .split(new RegExp('>__temp_new_line__\\n<')).join('><');
 
   const extractScript = (jsx, blocks = []) => {
     const remainder = jsx.replace(/".*?"/g, '""').replace(/'.*?'/g, "''").replace(/\n/g, ' ').replace(/({[^{}]*})/gm, (whole, p1) => {
@@ -561,7 +564,6 @@ const __macro_for = items => ({
   };
 
   const renderPug = (source, { store, files }) => {
-
     // prepare for case sensitive
     let replaced = source
       .replace(/__jsx=/g, () => {
