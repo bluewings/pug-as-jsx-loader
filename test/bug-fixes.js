@@ -36,11 +36,18 @@ const tests = [
   <Modal.Body>{ body }</Modal.Body>
 </Modal>`],
 
-['className conflict',
+['className conflict 1',
 `a.nav-link
   i(className='{icons[name]}')`,
 `<a className="nav-link">
   <i className={icons[name]} />
+</a>`],
+
+['className conflict 2',
+`a.nav-link(href='#', onClick='{this.handleClick}')          
+  i(style='{{ marginRight: 8 }}', className='{icons[name]}')`,
+`<a className="nav-link" href="#" onClick={this.handleClick}>
+  <i className={icons[name]} style={{ marginRight: 8 }} />
 </a>`]
 ];
 /* eslint-enable */
