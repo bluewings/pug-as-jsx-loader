@@ -1,4 +1,8 @@
+// @import .css => styles
 .App
+  h3(className='{styles.custom}') styled component
+  h3(style='{{ color: "blue", backgroundColor: "silver" }}') inline style
+  hr
   .App-header
     img.App-logo(src='{logo}', alt='logo')
     h2 Welcome to React
@@ -13,4 +17,6 @@
       li(@for='(name, i) in characters')
         | {name}
         button(type='button',
-          onClick='{this.handleRemove.bind(this, name, i)}') check
+          data-name='{name}',
+          data-index='{i}',
+          onClick='{this.handleItemClick}') check

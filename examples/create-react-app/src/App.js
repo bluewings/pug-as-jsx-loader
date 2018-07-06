@@ -15,11 +15,13 @@ const characters = [
 
 class App extends Component {
 
-  handleClick = (event) => {
+  handleClick() {
     alert('clicked');
   }
 
-  handleRemove = (name, index, event) => {
+  handleItemClick(event) {
+    const name = event.target.getAttribute('data-name');
+    const index = event.target.getAttribute('data-index');
     alert(name + ' ' + index + ' ' + event.target.tagName);
   }
 
