@@ -485,11 +485,10 @@ const __macro_for = items => ({
         ].filter(line => line).join('\n').replace(/\n{2,}/g, '\n\n')}\n`;
 
         if (options.autoUpdateJsFile) {
-          codemod(jsxOutput, files, {
-            ...options,
+          codemod(jsxOutput, files, Object.assign({}, options, {
             importCss,
             reservedWords,
-          });
+          }));
         }
 
         if (options.transpiledFile) {
