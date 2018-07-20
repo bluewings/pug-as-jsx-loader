@@ -719,15 +719,17 @@ const __macro_for = items => ({
     let replaced;
     let macros = {};
     if (isJsFile) {
-      replaced = source.replace(/\n(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, p1, p2, p3) => {
+      replaced = source.replace(/(\n)?(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, _p0, _p1, p2, p3) => {
         const result = renderPug(p3.trim(), { store, files });
         macros = Object.assign({}, macros, result.macros);
+        const p0 = _p0 || '';
+        const p1 = _p1 || '';
         const rendered = jsxHelper.beautify(result.replaced, {
           indent: p1.length + 2,
           maxLineLength: 100,
           lineDivider: LINE_DIVIDER,
         });
-        return `\n${p1}${p2} (\n${rendered}\n${p1})`;
+        return `${p0}${p1}${p2} (\n${rendered}\n${p1})`;
       });
     } else {
       const rendered = renderPug(source, { store, files });

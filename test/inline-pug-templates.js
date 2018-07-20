@@ -68,6 +68,37 @@ function Component2(props) {
     </ul>
   );
 }`],
+
+['issue-19',
+`const CodePen = ({dataSlug}) => pug\`
+  div.mb-4
+    p.codepen(
+      data-height='{400}',
+      data-theme-id='dark',
+      data-slug-hash='{dataSlug}',
+      data-default-tab='result',
+      data-user='PhmNgocNghia',
+      data-embed-version='{2}',
+      data-preview='{true}'
+    )\`;
+
+export default CodePen;`,
+`const CodePen = ({dataSlug}) => (
+  <div className="mb-4">
+    <p
+      className="codepen"
+      data-default-tab="result"
+      data-embed-version={2}
+      data-height={400}
+      data-preview={true}
+      data-slug-hash={dataSlug}
+      data-theme-id="dark"
+      data-user="PhmNgocNghia"
+    />
+  </div>
+);
+
+export default CodePen;`],
 ];
 /* eslint-enable */
 
