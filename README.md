@@ -16,7 +16,7 @@ npm install pug-as-jsx-loader --save-dev
 
 ## Usage
 
-**webpack.config.js**
+### webpack.config.js
 ```js
 module.exports = {
   module: {
