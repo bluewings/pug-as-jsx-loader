@@ -16,12 +16,21 @@ npm install pug-as-jsx-loader --save-dev
 
 ## Usage
 
-[Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html)
-
-``` javascript
-var jsx = require("pug-as-jsx-loader!./file.pug");
-// => returns file.pug content as jsx
+**webpack.config.js**
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.pug$/,
+        use: [ 'babel-loader', 'pug-as-jsx-loader' ]
+      }
+    ]
+  }
+}
 ```
+
+
 
 ### [pug | jade](https://pugjs.org) template (./file.pug)
 ```pug
