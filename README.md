@@ -21,10 +21,14 @@ npm install pug-as-jsx-loader --save-dev
 
 <h2 align="center">Usage</h2>
 
+The ```pug-as-jsx-loader``` transpiles a pug file loaded with import or require into a jsx function. 
+
 **App.js**
 ```js
 import template from 'App.pug';
 ```
+
+Chain the ```pug-as-jsx-loader``` with the ```babel-loader``` to transform es6 syntax.
 
 **webpack.config.js**
 ```js
