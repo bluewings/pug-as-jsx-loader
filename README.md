@@ -11,6 +11,11 @@
   </a>
   <h1>pug-as-jsx-loader</h1>
   Loads a <a href="https://github.com/pugjs/pug">pug</a> and transpiles it to <a href="https://reactjs.org/docs/introducing-jsx.html">jsx</a>.
+  With pug-as-jsx-loader, you can use pugjs instead of jsx in the react app.
+This process allows you to separate view and logic and make markups easy.
+(Of course, you can also use the inline in js file without separating the pug into separate files.)
+
+And it also provides some recipes that will simplify the code as well.
 </div>
 
 <h2 align="center">Install</h2>
