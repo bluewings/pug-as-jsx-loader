@@ -72,3 +72,10 @@ TBD
 ```
 TBD
 ```
+
+<h2 align="center">License</h2>
+
+[MIT](http://www.opensource.org/licenses/mit-license.php)
+
+[npm-badge-png]: https://nodei.co/npm/pug-as-jsx-loader.png
+[package-url]: https://www.npmjs.com/package/pug-as-jsx-loader
