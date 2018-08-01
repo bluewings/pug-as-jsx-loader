@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/pug-as-jsx-loader.svg)](https://badge.fury.io/js/pug-as-jsx-loader)
+
+[![npm badge][npm-badge-png]][package-url]
+
 <div align="center">
   <img width="160" height="160"
     src="https://bluewings.github.io/pug-as-jsx-loader/static/img/pug-as-jsx.png">
