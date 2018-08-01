@@ -10,7 +10,7 @@
       src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
   <h1>pug-as-jsx-loader</h1>
-  Loads a <a href="https://github.com/pugjs/pug">pug</a> and transpiles it to <a href="https://reactjs.org/docs/introducing-jsx.html">jsx</a>
+  Loads a <a href="https://github.com/pugjs/pug">pug</a> and transpiles it to <a href="https://reactjs.org/docs/introducing-jsx.html">jsx</a>.
 </div>
 
 <h2 align="center">Install</h2>
