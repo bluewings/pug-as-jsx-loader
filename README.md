@@ -10,7 +10,13 @@ npm install pug-as-jsx-loader --save-dev
 
 <h2 align="center">Usage</h2>
 
+**file.js**
+```js
+```
 
+**webpack.config.js**
+```js
+```
 
 <h2 align="center">Options</h2>
 
