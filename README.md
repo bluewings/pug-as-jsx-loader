@@ -16,6 +16,16 @@ npm install pug-as-jsx-loader --save-dev
 
 **webpack.config.js**
 ```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.pug$/,
+        use: [ 'babel-loader', 'pug-as-jsx-loader' ]
+      }
+    ]
+  }
+}
 ```
 
 <h2 align="center">Options</h2>
