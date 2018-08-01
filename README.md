@@ -1,7 +1,7 @@
 <div align="center">
   <img width="180" height="180"
     src="https://bluewings.github.io/pug-as-jsx-loader/static/img/pug-as-jsx.png">
-  <a href="https://github.com/webpack/webpack">
+  <a href="https://github.com/webpack/webpack" style="vertical-align:top">
     <img width="200" height="200"
       src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
