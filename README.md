@@ -16,10 +16,10 @@ npm install pug-as-jsx-loader --save-dev
 
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
-|**[`resolveVariables`](#resolveVariables)**|`{Object}`|`null`| -|
-|**[`resolveComponents`](#resolveComponents)** |`{Object}`|`null`| -|
-|**[`transpiledFile`](#transpiledFile)** |`{Boolean}`|`false`| -|
-|**[`autoUpdateJsFile`](#autoUpdateJsFile)** |`{Boolean}`|`false`| -|
+|**[`resolveVariables`](#resolvevariables)**|`{Object}`|`null`| -|
+|**[`resolveComponents`](#resolvecomponents)** |`{Object}`|`null`| -|
+|**[`transpiledFile`](#transpiledfile)** |`{Boolean}`|`false`| -|
+|**[`autoUpdateJsFile`](#autoiupdatejsfile)** |`{Boolean}`|`false`| -|
 
 ### `resolveVariables`
 
