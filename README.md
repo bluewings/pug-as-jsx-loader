@@ -6,6 +6,7 @@
       src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
   <h1>pug-as-jsx-loader</h1>
+  Loads a pug and transpiles it to jsx.
 </div>
 
 <h2 align="center">Install</h2>
