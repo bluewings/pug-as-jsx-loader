@@ -53,6 +53,18 @@ const tests = [
 ['className conflict 3',
 `button.btn(className='{styles.btnAdAssets}' data-item-id='{item.id}')`,
 `<button className={\`btn \${styles.btnAdAssets}\`} data-item-id={item.id} />`],
+
+['className conflict 4',
+`button.btn.btn-default(type='button',
+  className='{classNames(styles.btnApply, { "btn-active": refValue && refValue !== fieldValue })}',
+  disabled='{!refValue || refValue === fieldValue}',
+  onClick='{this.handleSyncClick}')`,
+`<button
+  className={\`btn btn-default \${classNames(styles.btnApply, { 'btn-active': refValue && refValue !== fieldValue})}\`}
+  disabled={!refValue || refValue === fieldValue}
+  onClick={this.handleSyncClick}
+  type="button"
+/>`],
 ];
 /* eslint-enable */
 
