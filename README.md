@@ -1,6 +1,8 @@
 [![npm version](https://badge.fury.io/js/pug-as-jsx-loader.svg)](https://badge.fury.io/js/pug-as-jsx-loader)
 
+<div style="float:right">
 [![npm badge][npm-badge-png]][package-url]
+</div>
 
 <div align="center">
   <img width="160" height="160"
