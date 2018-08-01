@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>pug-as-jsx-Loader</h1>
+  <h1>pug-as-jsx-loader</h1>
 </div>
 
 <h2 align="center">Install</h2>
