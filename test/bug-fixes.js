@@ -48,7 +48,11 @@ const tests = [
   i(style='{{ marginRight: 8 }}', className='{icons[name]}')`,
 `<a className="nav-link" href="#" onClick={this.handleClick}>
   <i className={icons[name]} style={{ marginRight: 8 }} />
-</a>`]
+</a>`],
+
+['className conflict 3',
+`button.btn(className='{styles.btnAdAssets}' data-item-id='{item.id}')`,
+`<button className={\`btn \${styles.btnAdAssets}\`} data-item-id={item.id} />`],
 ];
 /* eslint-enable */
 
