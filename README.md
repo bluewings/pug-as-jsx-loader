@@ -75,7 +75,9 @@ TBD
       loader: 'pug-as-jsx-loader',
       options: {
         resolveComponents: {
+          // import Select from 'react-select';
           Select: 'react-select',
+          // import { FormattedMessage as Intl } from 'react-intl';
           Intl: { module: 'react-intl', member: 'FormattedMessage' },
         },
       },
