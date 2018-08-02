@@ -75,7 +75,7 @@ TBD
       loader: 'pug-as-jsx-loader',
       options: {
         resolveComponents: {
-          Intl: { module: 'react-intl', destructing: true },
+          Intl: { module: 'react-intl', member: 'FormattedMessage' },
         },
       },
     },
