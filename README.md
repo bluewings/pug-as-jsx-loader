@@ -66,11 +66,20 @@ TBD
 
 ### `resolveComponents`
 
-```
-options: {
-  resolveComponents: {
-    Intl: 'useIntl/FormattedMessage',
-  },
+```js
+{
+  test: /\.pug$/,
+  use: [
+    'babel-loader',
+    {
+      loader: 'pug-as-jsx-loader',
+      options: {
+        resolveComponents: {
+          Intl: 'useIntl/FormattedMessage',
+        },
+      },
+    },
+  ],
 },
 ```
 
