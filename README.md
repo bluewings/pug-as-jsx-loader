@@ -67,7 +67,11 @@ TBD
 ### `resolveComponents`
 
 ```
-TBD
+options: {
+  resolveComponents: {
+    Intl: 'useIntl/FormattedMessage',
+  },
+},
 ```
 
 ### `transpiledFile`
