@@ -15,10 +15,11 @@
 This process allows you to separate view and logic and make markups easy.
 (Of course, you can also use the inline in js file without separating the pug into separate files.)
 
+  <img width="640"  src="https://bluewings.github.io/pug-as-jsx-loader/static/img/anim-pug-as-jsx.gif">
+
 And it also provides some recipes that will simplify the code as well.
 
-  <img width="640"
-    src="https://bluewings.github.io/pug-as-jsx-loader/static/img/anim-pug-as-jsx.gif">
+
 </div>
 
 <h2 align="center">Install</h2>
