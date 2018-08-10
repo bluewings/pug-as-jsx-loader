@@ -6,7 +6,7 @@
 
 ## [Try it out here...](https://bluewings.github.io/pug-as-jsx-loader/)
 
-<img src='https://bluewings.github.io/pug-as-jsx-loader/static/img/try-it-out.png'>
+<a href="https://bluewings.github.io/pug-as-jsx-loader/"><img src='https://bluewings.github.io/pug-as-jsx-loader/static/img/pug-as-jsx-loader.anim.gif'></a>
 
 ## Installation
 
