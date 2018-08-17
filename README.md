@@ -34,7 +34,14 @@ The ```pug-as-jsx-loader``` transpiles a pug file loaded with import or require 
 
 **App.js**
 ```js
+import React from 'react';
 import template from 'App.pug';
+
+class App extends React.Component {
+  render() {
+    return template();
+  }
+}
 ```
 
 Chain the ```pug-as-jsx-loader``` with the ```babel-loader``` to transform es6 syntax.
