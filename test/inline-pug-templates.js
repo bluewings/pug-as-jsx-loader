@@ -30,25 +30,7 @@ function Component2(props) {
   li(@for='item in props.items')
     a {item.message}\`;
 }`,
-`const IS_MAP_SENTINEL = '@@__IMMUTABLE_MAP__@@';
-const IS_LIST_SENTINEL = '@@__IMMUTABLE_LIST__@@';
-const __macro_for = items => ({
-  map: (mapFn) => {
-    let mapFns = [];
-    if (items && items[IS_MAP_SENTINEL]) {
-      items.mapEntries(([key, value], i) => {
-        mapFns.push(mapFn(value, key, i));
-      });
-    } else if (items && items[IS_LIST_SENTINEL]) {
-      items.forEach((value, i) => {
-        mapFns.push(mapFn(value, i, i));
-      });
-    } else {
-      mapFns = Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index));
-    }
-    return mapFns;
-  },
-});
+`import __macro from 'pug-as-jsx-loader/lib/macro';
 
 function Component(props) {
   return (
@@ -60,7 +42,7 @@ function Component(props) {
 function Component2(props) {
   return (
     <ul>
-      { __macro_for(props.items).map((item, i) => (
+      { __macro.for(props.items).map((item, i) => (
         <li key={i}>
           <a>{item.message}</a>
         </li>

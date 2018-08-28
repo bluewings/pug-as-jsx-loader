@@ -7,6 +7,8 @@ const codemod = require('./lib/codemod');
 
 const isWin = (typeof os.platform === 'function' && os.platform().search(/win/i) !== -1);
 
+const IMPORT_MACRO = "import __macro from 'pug-as-jsx-loader/lib/macro';";
+
 module.exports = function (jsxHelper, { pug, loaderUtils }) {
   if (!pug) {
     pug = self.pug;
@@ -69,27 +71,8 @@ module.exports = function (jsxHelper, { pug, loaderUtils }) {
           };
         }
         return {
-          macro: `const IS_MAP_SENTINEL = '@@__IMMUTABLE_MAP__@@';
-const IS_LIST_SENTINEL = '@@__IMMUTABLE_LIST__@@';
-const __macro_for = items => ({
-  map: (mapFn) => {
-    let mapFns = [];
-    if (items && items[IS_MAP_SENTINEL]) {
-      items.mapEntries(([key, value], i) => {
-        mapFns.push(mapFn(value, key, i));
-      });
-    } else if (items && items[IS_LIST_SENTINEL]) {
-      items.forEach((value, i) => {
-        mapFns.push(mapFn(value, i, i));
-      });
-    } else {
-      mapFns = Object.keys((items || [])).map((key, index) => mapFn(items[key], key, index));
-    }
-    return mapFns;
-  },
-});
-`,
-          startBlock: `${indent}| { __macro_for(${items}).map((${item}, ${paramKey}${paramIndex}) => (`,
+          macro: true,
+          startBlock: `${indent}| { __macro.for(${items}).map((${item}, ${paramKey}${paramIndex}) => (`,
           replacement: current.replace(pattern, `$1$2key='{${paramKey}}'`),
           endBlock: `${indent}| ))}`,
         };
@@ -391,9 +374,12 @@ const __macro_for = items => ({
     });
   });
 
-  const updateJSX = (source, macros, store, files, rootPath, isJsFile, options = {}) => {
+  const updateJSX = (source, useMacro, store, files, rootPath, isJsFile, options = {}) => {
     if (isJsFile) {
-      const output = [...Object.keys(macros), source].filter(e => e).join('\n');
+      const output = [
+        useMacro ? `${IMPORT_MACRO}\n` : '',
+        source,
+      ].filter(e => e).join('\n');
       return new Promise((resolve, reject) => {
         if (options.transpiledFile) {
           fs.writeFile(files.jsx, output, 'utf8', err => (err ? reject(err) : resolve(output)));
@@ -404,7 +390,7 @@ const __macro_for = items => ({
     }
 
     const reservedWords = [
-      '__macro_for', 'function', 'import',
+      '__macro', 'function', 'import',
       'Object', 'String', 'Number', 'Array',
       'JSON', 'Math', 'null', 'this',
       'return', 'true', 'false', 'new', 'event', 'React', 'typeof',
@@ -466,11 +452,11 @@ const __macro_for = items => ({
         // eslint-disable-next-line prefer-template
         const jsxOutput = `${[
           "import React from 'react';",
-          ...importComponents.map(({ name, from }) => `import ${name} from '${from}';\n`),
-          ...importVariables.map(({ name, from }) => `import ${name} from '${from}';\n`),
-          ...importCss.map(({ name, from }) => `import ${name} from '${from}';\n`),
+          useMacro ? IMPORT_MACRO : '',
+          ...importComponents.map(({ name, from }) => `import ${name} from '${from}';`),
+          ...importVariables.map(({ name, from }) => `import ${name} from '${from}';`),
+          ...importCss.map(({ name, from }) => `import ${name} from '${from}';`),
           '\n',
-          ...Object.keys(macros),
           exportsFn,
           '  return (',
         // source,
@@ -593,7 +579,7 @@ const __macro_for = items => ({
       lines: [],
     }).lines.join('\n');
 
-    const macros = {};
+    let useMacro = false;
 
     // process annotations
     const transformed = replaced.split(/\n/).reduce((dict, curr) => {
@@ -611,7 +597,7 @@ const __macro_for = items => ({
         if (curr.match(annotation.pattern)) {
           const { macro, replacement, startBlock, endBlock } = annotation.process(curr, annotation.pattern);
           if (macro) {
-            macros[macro] = true;
+            useMacro = true;
           }
           if (startBlock) {
             if (startBlock.search(/[^\s]/) !== -1) {
@@ -673,7 +659,7 @@ const __macro_for = items => ({
       }
       return whole;
     }).replace(/\{\}/g, '{ }');
-    return { replaced, macros };
+    return { replaced, useMacro };
   };
 
   return function (source) {
@@ -717,11 +703,11 @@ const __macro_for = items => ({
       isJsFile = true;
     }
     let replaced;
-    let macros = {};
+    let useMacro = false;
     if (isJsFile) {
       replaced = source.replace(/(\n)?(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, _p0, _p1, p2, p3) => {
         const result = renderPug(p3.trim(), { store, files });
-        macros = Object.assign({}, macros, result.macros);
+        useMacro = useMacro || result.useMacro;
         const p0 = _p0 || '';
         const p1 = _p1 || '';
         const rendered = jsxHelper.beautify(result.replaced, {
@@ -734,14 +720,14 @@ const __macro_for = items => ({
     } else {
       const rendered = renderPug(source, { store, files });
       replaced = rendered.replaced;
-      macros = rendered.macros;
+      useMacro = useMacro || rendered.useMacro;
     }
     if (source === replaced) {
       return callback(null, source);
     }
 
     Promise.all([
-      updateJSX(replaced, macros, store, files, root, isJsFile, options),
+      updateJSX(replaced, useMacro, store, files, root, isJsFile, options),
       isJsFile ? Promise.resolve() : updateCssClass(replaced, files),
     ])
     .then(

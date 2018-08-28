@@ -13,17 +13,17 @@ ul
 ul
   li(@for='(item, key, index) in items') {item.name}`,
 `<ul>
-  { __macro_for(items).map((item, i) => (
+  { __macro.for(items).map((item, i) => (
     <li key={i}>{item.name}</li>
     ))}
 </ul>
 <ul>
-  { __macro_for(items).map((item, key) => (
+  { __macro.for(items).map((item, key) => (
     <li key={key}>{item.name}</li>
     ))}
 </ul>
 <ul>
-  { __macro_for(items).map((item, key, index) => (
+  { __macro.for(items).map((item, key, index) => (
     <li key={key}>{item.name}</li>
     ))}
 </ul>`],
@@ -34,7 +34,7 @@ ul
     | {key} : {metric}`,
 `{(after.templates[0]) && (
 <div>
-  { __macro_for((allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics).map((metric, key) => (
+  { __macro.for((allTemplates.filter(e => e.id === after.templates[0])[0] || { }).metrics).map((metric, key) => (
       <div key={key}>
         {key} : {metric}
       </div>
