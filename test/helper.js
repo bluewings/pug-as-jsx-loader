@@ -1,60 +1,26 @@
-const pugAsJsxLoader = require('../index.js');
+const pugAsJsxLoader = require('../');
 
 exports.run = function run(input, addOptions = {}) {
   return new Promise((resolve) => {
-    const callback = (err, output) => {
-      const jsx = ((output.match(/\n {2}return \(\n([\s\S]+)\n {2}\)/m) || [])[1] || '')
-        .split(/\n/).filter(each => each).reduce((prev, curr) => {
-          if (typeof prev.indent === 'undefined') {
-            prev.indent = new RegExp(`^${curr.match(/^(\s+)/)[0]}`); // eslint-disable-line no-param-reassign
-          }
-          prev.lines.push(prev.indent ? curr.replace(prev.indent, '') : curr);
-          return prev;
-        }, { lines: [] }).lines.join('\n');
-
-      const result = {
-        jsx,
-        output,
-        variables: [],
-        components: [],
-      };
-
-      const refs = output.replace(/\n\/\//gm, '\n')
-        .replace(/\n/gm, ' ').replace(/\s+/g, ' ')
-        .replace(/\s+/g, ' ')
-        .match(/template.call\(this, {([^}]+)}/);
-
-      if (refs) {
-        let cursor = null;
-        refs[1].replace(/\/\/\s+/g, '//')
-          .split(/[\s,]+/)
-          .filter(each => each)
-          .forEach((each) => {
-            if (each === '//variables') {
-              cursor = result.variables;
-            } else if (each === '//components') {
-              cursor = result.components;
-            } else if (cursor && each) {
-              cursor.push(each);
-            }
-          });
-      }
-      result.variables.sort();
-      result.components.sort();
-      resolve(result);
-    };
-
     const opt = {
-      callback,
-      async: () => callback,
       cacheable: () => {},
       resourcePath: '.test.pug',
+      detail: true,
     };
 
     Object.keys(addOptions).forEach((key) => {
       opt[key] = addOptions[key];
     });
 
-    pugAsJsxLoader.call(opt, input);
+    const { jsx, jsxTemplate: output, variables: params } = pugAsJsxLoader.call(opt, input);
+
+    const { components, variables } = params.reduce((prev, e) => {
+      if (e.search(/^[A-Z]/) === 0 && e.search(/[a-z]/) !== -1) {
+        return { ...prev, components: [...prev.components, e] };
+      }
+      return { ...prev, variables: [...prev.variables, e] };
+    }, { components: [], variables: [] });
+
+    resolve({ jsx, output, variables, components });
   });
 };

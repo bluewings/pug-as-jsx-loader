@@ -14,21 +14,21 @@ const tests = [
 
 ['merge classNames',
 `.btn(abbr="interrupt", class="btn-default")`,
-`<div abbr="interrupt" className="btn btn-default" />`],
+`<div className="btn btn-default" abbr="interrupt" />`],
 
 ['use template-literal if possible',
 `ul.nav.nav-tabs(className=\'{"nav-tabs-" + tabs.length}\')`,
-'<ul className={`nav nav-tabs nav-tabs-${tabs.length}`} />'],
+"<ul className={'nav nav-tabs ' + ('nav-tabs-' + tabs.length)} />"],
 
 ['line breaks when there are too many properties',
 `button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')`,
 `<button
-  aria-controls="navbar"
-  aria-expanded="false"
   className="navbar-toggle"
-  data-target="#navbar"
-  data-toggle="collapse"
   type="button"
+  data-toggle="collapse"
+  data-target="#navbar"
+  aria-expanded="false"
+  aria-controls="navbar"
 />`],
 
 ['multi line options',
@@ -41,7 +41,7 @@ const tests = [
 `div
   WrappedComponent(id='wrap', __jsx='{...props}', data-attr='attr')`,
 `<div>
-  <WrappedComponent data-attr="attr" id="wrap" {...props} />
+  <WrappedComponent id="wrap" {...props} data-attr="attr" />
 </div>`],
 
 ['use multiple jsx expressions',

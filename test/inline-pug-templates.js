@@ -42,11 +42,11 @@ function Component(props) {
 function Component2(props) {
   return (
     <ul>
-      { __macro.for(props.items).map((item, i) => (
+      {__macro.for(props.items).map((item, i) => (
         <li key={i}>
           <a>{item.message}</a>
         </li>
-        ))}
+      ))}
     </ul>
   );
 }`],
@@ -69,13 +69,13 @@ export default CodePen;`,
   <div className="mb-4">
     <p
       className="codepen"
-      data-default-tab="result"
-      data-embed-version={2}
       data-height={400}
-      data-preview={true}
-      data-slug-hash={dataSlug}
       data-theme-id="dark"
+      data-slug-hash={dataSlug}
+      data-default-tab="result"
       data-user="PhmNgocNghia"
+      data-embed-version={2}
+      data-preview={true}
     />
   </div>
 );

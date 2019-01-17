@@ -9,7 +9,7 @@ const tests = [
 `// @import .scss => styles
 .root(className='{styles.a}')
   h1.greeting hello world!`,
-`<div className={\`root $\{styles.a\}\`}>
+`<div className={'root ' + styles.a}>
   <h1 className="greeting">hello world!</h1>
 </div>`],
 ];
