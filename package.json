@@ -1,5 +1,8 @@
 {
   "name": "pug-as-jsx-loader",
+  "main": "dist/pug-as-jsx-loader.cjs.js",
+  "module": "dist/pug-as-jsx-loader.es.js",
+  "jsnext:main": "dist/pug-as-jsx-loader.es.js",
   "version": "1.0.59",
   "description": "pug loader module for webpack",
   "author": {
@@ -19,16 +22,24 @@
     "eslint-plugin-react": "^6.8.0",
     "glob": "^7.1.2",
     "jscodeshift": "^0.5.1",
-    "loader-utils": "^1.1.0",
+    "loader-utils": "^1.2.3",
     "pug": "^2.0.0-beta6",
+    "pug-as-jsx-utils": "^1.0.16",
     "recast": "^0.15.5"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "mocha": "^3.2.0",
+    "rollup": "^1.1.0",
+    "rollup-plugin-babel": "^4.3.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
     "should": "^11.1.2"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "rollup -c",
+    "prebuild": "rm -rf dist/*"
   },
   "engines": {
     "node": ">=4.0.0"

@@ -31,9 +31,9 @@ const tests = [
   Modal.Body { body }`,
 `<Modal>
   <Modal.Header>
-    <Modal.Title>{ header }</Modal.Title>
+    <Modal.Title>{header}</Modal.Title>
   </Modal.Header>
-  <Modal.Body>{ body }</Modal.Body>
+  <Modal.Body>{body}</Modal.Body>
 </Modal>`],
 
 ['className conflict 1',
@@ -47,12 +47,12 @@ const tests = [
 `a.nav-link(href='#', onClick='{this.handleClick}')          
   i(style='{{ marginRight: 8 }}', className='{icons[name]}')`,
 `<a className="nav-link" href="#" onClick={this.handleClick}>
-  <i className={icons[name]} style={{ marginRight: 8 }} />
+  <i style={{ marginRight: 8 }} className={icons[name]} />
 </a>`],
 
 ['className conflict 3',
 `button.btn(className='{styles.btnAdAssets}' data-item-id='{item.id}')`,
-`<button className={\`btn \${styles.btnAdAssets}\`} data-item-id={item.id} />`],
+`<button className={'btn ' + styles.btnAdAssets} data-item-id={item.id} />`],
 
 ['className conflict 4',
 `button.btn.btn-default(type='button',
@@ -60,10 +60,10 @@ const tests = [
   disabled='{!refValue || refValue === fieldValue}',
   onClick='{this.handleSyncClick}')`,
 `<button
-  className={\`btn btn-default \${classNames(styles.btnApply, { 'btn-active': refValue && refValue !== fieldValue})}\`}
+  className={'btn btn-default ' + classNames(styles.btnApply, { 'btn-active': refValue && refValue !== fieldValue })}
+  type="button"
   disabled={!refValue || refValue === fieldValue}
   onClick={this.handleSyncClick}
-  type="button"
 />`],
 ];
 /* eslint-enable */
