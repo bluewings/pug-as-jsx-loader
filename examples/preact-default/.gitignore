@@ -1,0 +1,9 @@
+node_modules
+/build
+/*.log
+*.lock
+
+package-lock.json
+
+# transpiled pug-jsx file
+*.transpiled.jsx
