@@ -30,6 +30,7 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.28.0",
     "jest": "20.0.3",
+    "jest-transform-pug-as-jsx": "^1.0.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
@@ -66,6 +67,7 @@
     "transform": {
       "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^.+\\.pug$": "jest-transform-pug-as-jsx",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
