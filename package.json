@@ -3,7 +3,7 @@
   "main": "dist/pug-as-jsx-loader.cjs.js",
   "module": "dist/pug-as-jsx-loader.es.js",
   "jsnext:main": "dist/pug-as-jsx-loader.es.js",
-  "version": "1.0.63",
+  "version": "1.0.64",
   "description": "pug loader module for webpack",
   "author": {
     "name": "Sung Won Cha",
@@ -15,21 +15,21 @@
   },
   "dependencies": {
     "babylon": "^7.0.0-beta.44",
+    "jscodeshift": "^0.5.1",
+    "loader-utils": "^1.2.3",
+    "pug-as-jsx-utils": "^1.0.23",
+    "recast": "^0.15.5"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "glob": "^7.1.2",
-    "jscodeshift": "^0.5.1",
-    "loader-utils": "^1.2.3",
-    "pug": "^2.0.0-beta6",
-    "pug-as-jsx-utils": "^1.0.23",
-    "recast": "^0.15.5"
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.2.0",
     "mocha": "^3.2.0",
+    "pug": "^2.0.0-beta6",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",
