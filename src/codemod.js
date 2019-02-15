@@ -57,9 +57,10 @@ const getLinkedJsFiles = (files) => {
 
 const codemod = ({ useThis, variables }, resourcePath) => {
   try {
+    const filePath = resourcePath.split(path.sep).join('/');
     const files = {
-      path: resourcePath.replace(/\/[^/]+$/, ''),
-      pug: `./${resourcePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
+      path: filePath.replace(/\/[^/]+$/, ''),
+      pug: `./${filePath.replace(/\.[a-zA-Z0-9]+$/, '').split('/').pop()}.pug`,
     };
 
     const printOptions = {

@@ -3,6 +3,7 @@ import { getOptions } from 'loader-utils';
 import codemod from './codemod';
 
 const fs = require('fs');
+const path = require('path');
 
 export default function loader(source) {
   const options = getOptions(this) || this;
@@ -54,7 +55,7 @@ export default function loader(source) {
     codemod({ useThis, variables }, this.resourcePath);
   }
 
-  const basename = this.resourcePath.split('/').pop().replace(/\.[a-zA-Z0-9]+$/, '');
+  const basename = this.resourcePath.split(path.sep).pop().replace(/\.[a-zA-Z0-9]+$/, '');
   const code = jsxTemplate.replace(/%BASENAME%/g, `./${basename}`);
 
   if (options.transpiledFile) {
