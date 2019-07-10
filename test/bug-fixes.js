@@ -40,19 +40,19 @@ const tests = [
 `a.nav-link
   i(className='{icons[name]}')`,
 `<a className="nav-link">
-  <i className={icons[name]} />
+  <i className={icons[name]}></i>
 </a>`],
 
 ['className conflict 2',
 `a.nav-link(href='#', onClick='{this.handleClick}')          
   i(style='{{ marginRight: 8 }}', className='{icons[name]}')`,
 `<a className="nav-link" href="#" onClick={this.handleClick}>
-  <i style={{ marginRight: 8 }} className={icons[name]} />
+  <i style={{ marginRight: 8 }} className={icons[name]}></i>
 </a>`],
 
 ['className conflict 3',
 `button.btn(className='{styles.btnAdAssets}' data-item-id='{item.id}')`,
-`<button className={'btn ' + styles.btnAdAssets} data-item-id={item.id} />`],
+`<button className={'btn ' + styles.btnAdAssets} data-item-id={item.id}></button>`],
 
 ['className conflict 4',
 `button.btn.btn-default(type='button',
@@ -64,7 +64,7 @@ const tests = [
   type="button"
   disabled={!refValue || refValue === fieldValue}
   onClick={this.handleSyncClick}
-/>`],
+></button>`],
 ];
 /* eslint-enable */
 

@@ -76,7 +76,7 @@ export default CodePen;`,
       data-user="PhmNgocNghia"
       data-embed-version={2}
       data-preview={true}
-    />
+    ></p>
   </div>
 );
 
