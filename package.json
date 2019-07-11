@@ -3,7 +3,7 @@
   "main": "dist/pug-as-jsx-loader.cjs.js",
   "module": "dist/pug-as-jsx-loader.es.js",
   "jsnext:main": "dist/pug-as-jsx-loader.es.js",
-  "version": "1.0.67",
+  "version": "1.0.68",
   "description": "pug loader module for webpack",
   "author": {
     "name": "Sung Won Cha",
@@ -18,7 +18,7 @@
     "glob": "^7.1.2",
     "jscodeshift": "^0.5.1",
     "loader-utils": "^1.2.3",
-    "pug-as-jsx-utils": "^1.0.26",
+    "pug-as-jsx-utils": "^1.0.27",
     "recast": "^0.15.5"
   },
   "devDependencies": {

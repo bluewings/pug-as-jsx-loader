@@ -3569,10 +3569,10 @@ promise@^7.0.1:
   dependencies:
     asap "~2.0.3"
 
-pug-as-jsx-utils@^1.0.26:
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/pug-as-jsx-utils/-/pug-as-jsx-utils-1.0.26.tgz#ed4b5f91c73e1a3fbf1be1b4684680f5a92dba51"
-  integrity sha512-EjYLk4bC2Wm168Pc4gjyXYBhDbxt+xpNBMh0Hn64s/uaf+hgnUXper+jythFda6Iv4N2L0vTP9qw9ua6uUS3tg==
+pug-as-jsx-utils@^1.0.27:
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/pug-as-jsx-utils/-/pug-as-jsx-utils-1.0.27.tgz#b15cede99e96ccfc7d25a399bf223d604b55f0fe"
+  integrity sha512-tzCqSu/f9qgCuinl8rc3FHVWe1jOgW8C2m8sYBi32mhyow+O8YobFJ7A5NQ0H+5DUrrqbmOERAnMwcerod+4KA==
   dependencies:
     "@babel/core" "^7.4.0"
     "@babel/preset-react" "^7.0.0"
