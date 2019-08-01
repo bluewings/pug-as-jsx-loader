@@ -16,25 +16,25 @@
   "dependencies": {
     "babylon": "^7.0.0-beta.47",
     "glob": "^7.1.2",
-    "jscodeshift": "^0.5.1",
+    "jscodeshift": "^0.6.4",
     "loader-utils": "^1.2.3",
     "pug-as-jsx-utils": "^1.0.28",
-    "recast": "^0.15.5"
+    "recast": "^0.18.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "eslint": "^3.12.2",
-    "eslint-config-airbnb": "^13.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.8.0",
-    "mocha": "^3.2.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "mocha": "^6.2.0",
     "pug": "^2.0.0-beta6",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "should": "^11.1.2"
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "should": "^13.2.3"
   },
   "scripts": {
     "test": "mocha",
