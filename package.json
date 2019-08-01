@@ -14,11 +14,11 @@
     "url": "https://github.com/bluewings/pug-as-jsx-loader"
   },
   "dependencies": {
-    "babylon": "^7.0.0-beta.44",
+    "babylon": "^7.0.0-beta.47",
     "glob": "^7.1.2",
     "jscodeshift": "^0.5.1",
     "loader-utils": "^1.2.3",
-    "pug-as-jsx-utils": "^1.0.27",
+    "pug-as-jsx-utils": "^1.0.28",
     "recast": "^0.15.5"
   },
   "devDependencies": {
