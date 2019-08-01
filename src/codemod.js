@@ -35,7 +35,7 @@ const getLinkedJsFiles = (files) => {
     .filter(file => file.search('.pug.transpiled.jsx') === -1)
     .map((file) => {
       const content = fs.readFileSync(file, 'utf8');
-      const templateFuncs = j(getSource(content, file))
+      const templateFuncs = getSource(content, file)
         .find(j.ImportDeclaration)
         .nodes()
         .filter((e) => {
@@ -72,7 +72,7 @@ const codemod = ({ useThis, variables }, resourcePath) => {
 
     jsFiles.forEach(({ file, content, templateFuncs }) => {
       let commentRemoved = content;
-      j(getSource(content, file))
+      getSource(content, file)
       .find(j.CallExpression)
       .filter(ce =>
         isTemplateWithThis(ce, templateFuncs) || isTemplateWithoutThis(ce, templateFuncs),
@@ -87,7 +87,7 @@ const codemod = ({ useThis, variables }, resourcePath) => {
 
       const breadcrumbs = {};
 
-      const root = j(getSource(commentRemoved, file))
+      const root = getSource(commentRemoved, file)
       .find(j.CallExpression)
       .filter(ce =>
         isTemplateWithThis(ce, templateFuncs) || isTemplateWithoutThis(ce, templateFuncs),
