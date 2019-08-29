@@ -7,7 +7,7 @@ const path = require('path');
 
 export default function loader(source) {
   const options = getOptions(this) || this;
-  const { transform } = options || {};
+  const { transform, pragma } = options || {};
   let resolve = {};
   if (options.resolve) {
     resolve = { ...options.resolve };
@@ -33,7 +33,7 @@ export default function loader(source) {
   if (this.resourcePath.split('.').pop().search(/^js/) !== -1 || source.match(/\s+pug`[\s\S]+`/)) {
     let useMacro = false;
     let jsxTemplate = source.replace(/(\n)?(\s*)?(.*)\s+pug`([\s\S]+?)`/g, (whole, _p0, _p1, p2, p3) => {
-      const { jsx, useMacro: macroFound } = pugToJsx(p3, { template: true, resolve, transform });
+      const { jsx, useMacro: macroFound } = pugToJsx(p3, { template: true, resolve, transform, pragma });
       if (macroFound) {
         useMacro = true;
       }
@@ -48,7 +48,7 @@ export default function loader(source) {
     return options.detail ? { jsxTemplate, variables: [] } : jsxTemplate;
   }
 
-  const result = pugToJsx(source, { template: true, resolve, transform });
+  const result = pugToJsx(source, { template: true, resolve, transform, pragma });
   const { jsxTemplate, usage, useThis, variables } = result;
 
   if (options.autoUpdateJsFile) {
