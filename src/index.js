@@ -55,7 +55,13 @@ export default function loader(source) {
     return options.detail ? { jsxTemplate, variables: [] } : jsxTemplate;
   }
 
-  const result = pugToJsx(source, { template: true, resolve, transform, pragma });
+  const result = pugToJsx(source, {
+    template: true,
+    resolve,
+    transform,
+    pragma,
+    rootDir,
+  });
   const { jsxTemplate, usage, useThis, variables } = result;
 
   if (options.autoUpdateJsFile) {
