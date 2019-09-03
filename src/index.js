@@ -7,7 +7,8 @@ const path = require('path');
 
 export default function loader(source) {
   const options = getOptions(this) || this;
-  const { transform, pragma, rootContext: rootDir } = options || {};
+  const { transform, pragma } = options || {};
+  const rootDir = this.rootContext;
   let resolve = {};
   if (options.resolve) {
     resolve = { ...options.resolve };
