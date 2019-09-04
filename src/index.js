@@ -9,6 +9,7 @@ export default function loader(source) {
   const options = getOptions(this) || this;
   const { transform, pragma } = options || {};
   const rootDir = this.rootContext;
+  const { resourcePath } = this;
   let resolve = {};
   if (options.resolve) {
     resolve = { ...options.resolve };
@@ -40,6 +41,7 @@ export default function loader(source) {
         transform,
         pragma,
         rootDir,
+        resourcePath,
       });
       if (macroFound) {
         useMacro = true;
@@ -61,6 +63,7 @@ export default function loader(source) {
     transform,
     pragma,
     rootDir,
+    resourcePath,
   });
   const { jsxTemplate, usage, useThis, variables } = result;
 
