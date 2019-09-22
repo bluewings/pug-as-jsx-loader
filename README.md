@@ -93,6 +93,17 @@ class Report extends React.Component {
 };
 ```
 
+### integration with Typescript
+```tsx
+// react-app-env.d.ts
+const React = require('react');
+
+declare module '*.pug' {
+  const template: (params?: { [key: string]: any }) => React.ReactElement;
+  export = template;
+}
+```
+
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
