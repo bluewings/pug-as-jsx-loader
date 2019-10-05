@@ -58,10 +58,10 @@ div
 
 @EXPECTED:
 <div>
-  {array.map(value => (
+  {__macro.for(array).map(value => (
     <div>{value}</div>
   ))}
-  {array.map((value, index) => (
+  {__macro.for(array).map((value, index) => (
     <div key={index}>{value}</div>
   ))}
 </div>
