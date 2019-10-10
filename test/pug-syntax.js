@@ -9,6 +9,7 @@ div(foo=bar)
 div(onClick=(() => click()))
 div= foo
 div #{bar}
+input(disabled)
 
 @EXPECTED:
 <>
@@ -16,6 +17,7 @@ div #{bar}
   <div onClick={() => click()}></div>
   <div>{foo}</div>
   <div>{bar}</div>
+  <input disabled={true} />
 </>
 
 
@@ -92,6 +94,15 @@ div
     return null
   })()}
 </div>
+
+
+@NAME: rest props
+
+@INPUT:
+div(...props)
+
+@EXPECTED:
+<div {...props}></div>
 `);
 
 describe('pug syntax', () => {
