@@ -7,7 +7,7 @@ const path = require('path');
 
 export default function loader(source) {
   const options = getOptions(this) || this;
-  const { transform, pragma } = options || {};
+  const { transform, pragma, autoFix } = options || {};
   const rootDir = this.rootContext;
   const { resourcePath } = this;
   let resolve = {};
@@ -40,6 +40,7 @@ export default function loader(source) {
         resolve,
         transform,
         pragma,
+        autoFix,
         rootDir,
         resourcePath,
       });
@@ -62,6 +63,7 @@ export default function loader(source) {
     resolve,
     transform,
     pragma,
+    autoFix,
     rootDir,
     resourcePath,
   });
