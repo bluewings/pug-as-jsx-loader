@@ -3234,10 +3234,10 @@ prop-types@^15.7.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-pug-as-jsx-utils@^1.0.44:
-  version "1.0.44"
-  resolved "https://registry.yarnpkg.com/pug-as-jsx-utils/-/pug-as-jsx-utils-1.0.44.tgz#cd0e885934bca0484a1cf7eae7ddd59492d37e56"
-  integrity sha512-btgEatQwyub2G+PrdA1Izvgq3jBxVcCXLwRHFk31jINYBOfD/bDRvOprFRWgsBOsP8bRbxQD49F2MzBJ7xxcPQ==
+pug-as-jsx-utils@^1.0.45:
+  version "1.0.45"
+  resolved "https://registry.yarnpkg.com/pug-as-jsx-utils/-/pug-as-jsx-utils-1.0.45.tgz#3dd94d52fba4dde31fa435b3c7b10b86844b1854"
+  integrity sha512-dnzVfrP83kTwHEk3Lq59A4oIYfoemLLjuCofw7GtfvQWk/46n4+iKLPs63npT5gHxDhEY7nJ+y45BBKTCOAC1A==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/parser" "^7.8.4"
