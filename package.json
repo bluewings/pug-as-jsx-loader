@@ -30,7 +30,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "mocha": "^6.2.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "rollup": "^1.17.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.1",
